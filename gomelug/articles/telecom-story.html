@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional">
+<html><head><meta http-equiv="content-type" content="text/html" charset="utf-8">
+<title>Остров пингвинов. Статьи: История одного проекта</title>
+<meta name="description" lang="ru" content="История проекта создания и-нет сервера на Гомельоблтелекоме, или еще одна технологическая драма">
+<meta name="keywords" lang="en" content="Linux, Unix, LUG, Oleg P. Philon, Gomel, Belarus, ex-USSR, Debian, free software, GNU, success story, consultant, expert, russian">
+<meta name="keywords" lang="ru" content="Линукс, Юникс, Гомель, Беларусь, пользователи Линукс, Олег П. Филон, статьи, телеком, Гомельоблтелеком, Белтелеком, Белпак, маразм, воровство ПО">
+<meta name="author" content="Олег П. Филон">
+<meta name="copyright" content="&copy; FDL, Олег П. Филон">
+<link rel="e-mail" href="mailto:ophil44@gmail.com">
+<meta name="date" content="2002-12-22">
+<meta name="version" content="1.1">
+<style type="text/css">
+<!--
+body, p, div, td, th, tr, form, ol, ul, li, input, textarea, select, a
+	{ 	font-family: Verdana,Geneva,Arial,Helvetica,sans-serif;
+		font-size: 11pt;
+    }
+body	{	background: white;
+		margin: 3px;
+    }
+p 	{	display: block;
+		text-align: justify;
+		line-height: 120%;
+		margin: 4px;
+    }	
+b 	{ 	font-weight: bold;
+		color: blue;
+    }
+pre, code, tt { font: "Courier New", Courier, monospace;
+		line-height: 120%;
+		font-size: 11pt;
+    }
+
+a	{	font-family: Verdana,Geneva,Arial,Helvetica,sans-serif;
+		font-size:12pt;
+		text-decoration:underline;
+		color: blue
+    }
+a:hover {	color: red
+    }
+-->
+</style>
+<script type="text/javascript" language=JavaScript>
+<!--
+newbie = new Image();
+newbie.src="../img/newbie.gif";
+guru = new Image();
+guru.src="../img/guru.gif";
+comm = new Image();
+comm.src="../img/forum.gif";
+about = new Image();
+about.src="../img/about.gif";
+-->
+</script>
+
+</head><body>
+<table cellpadding=0 cellspacing=3 border=0 summary="макет страницы">
+<tr valign=top><td><a href=../index.html><img src="../img/topbox.gif" alt="Остров пингвинов"></a></td>
+<td height=60 bgcolor="#FFCC33"></td></tr>
+<tr><td colspan=2><img src="../img/blue-line.gif" width=600 height=5
+alt="- - - - - - - - - - - - - - - - - - - - - - -">
+<tr valign=top><td width=131>
+<img name="corner" src="../img/articles.gif" width=125 height=91 alt="Сольные выступления"><br><br>
+<a href="../articles/newbie.html" onmouseover="document.corner.src='../img/newbie.gif';return true" onmouseout="document.corner.src='../img/articles.gif';return true">Для начинающих</a><br><br>
+<a href="../articles/guru.html" onmouseover="document.corner.src='../img/guru.gif';return true" onmouseout="document.corner.src='../img/articles.gif';return true">Для знатоков</a><br><br>
+<a href="../articles/community.html" onmouseover="document.corner.src='../img/forum.gif';return true" onmouseout="document.corner.src='../img/articles.gif';return true">Для души</a><br><br>
+<a href="../articles/about.html" onmouseover="document.corner.src='../img/about.gif';return true" onmouseout="document.corner.src='../img/articles.gif';return true">О нас</a>
+</td><td>
+
+<h3 align=center>История одного проекта</h3>
+<p align=right><i>Copyright(С) Олег П. Филон<br>
+канун 2000, Гомель, BY<br>
+<a href="mailto:ophil44@gmail.com">ophil44@gmail.com</a></i><br>
+<p>
+Мы начали строить сервер на Гомельском телекоме летом 1998г.  В то
+время госпредприятие Гомельоблтелеком было единственным провайдером
+услуг интернет в нашем городе, а из предлагаемых ими услуг были только
+электронная почта UUCP и PPP-соединение в интернет на скорости 14400.
+Никаких других сервисов, как и собственного веб-сервера, не существовало.
+<p>
+Постепенно, на самой обычной писишке, на основе открытых программ ГНЮ
+и голом энтузиазме нашей группы, на телекоме заработали все основные
+сервисы интернет - DNS, SMTP, POP, FTP, HTTP, Proxy и другие.
+<p>
+К сожалению, когда что-то уже было построено и наступила пора коммерческой
+эксплуатации этих сервисов, появились желающие "порулить". Нехорошая
+привычка воровать программы у далеких зарубежных фирм как-то легко
+перешла и на своих ближних коллег. Я не в коем случае не претендую
+на авторство программ из проектов ГНЮ, и даже попытался хоть
+как-то выразить свою благодарность этим авторам в своем сочинении
+<a href="sketch_o_heroes.html">Этюд о героях невидимого фронта</a>.  Но в
+целом этот сервер с настроеным набором общедоступных программ также имеет
+своих авторов. Да и несколько месяцев работы заслуживали признания. Но
+технологическая драма свершилась. Еще не освоив уже сделанное, нашу
+группу лишили возможности работать дальше.  Развитие сервера практически
+остановилось, и с весны 1999г.  мы не несем ответственности за работу
+сервера http://www.telecom.gomel.by
+<p>
+Весьма любопытно отношение руководства Гомельоблтелекома к нашему
+проекту. Это очень крупное предприятие, у которого сохранилась с советских
+времен большая машина и старинные приложения.  С системой Юникс на
+телекоме также время от времени сталкивались.  Например, почта UUCP с
+первого дня работала на SCO Unix.  Для отдельных задач были закуплены
+дорогие Unix машины, вполне сопоставимые по цене с мэйнфреймами. Только
+за приложения и системный софт были заплачены десятки тысяч долларов.
+Если сравнить это с нашим сервером, сделаным бесплатно и на рядовом IBM
+PC, контраст будет поразительным.
+<p>
+Тем не менее, Гомельоблтелеком не проявил никакого интереса ни
+к сотрудничеству с нашей группой, ни к зарабатыванию денег на уже
+построенных сервисах. Создателям сервера не оставили ни веб-странички,
+ни почтового ящика. Так что если уж русская душа загадочна, то душа
+белорусского начальника совершенно непостижима.
+<p>
+К счастью, в интернет масса и бесплатных почтовых серверов,
+и веб-приютов для бездомных. А наш нынешний сервер на AGAVA.RU
+предоставляет очень хорошие услуги веб-хостинга. Рекомендую.  Зайдите на
+<a href="http://hosting.agava.ru/">hosting.agava.ru</a> и испытайте
+свою удачу.
+</td></tr><tr><td colspan=2 align=center>
+<img src=../img/footer.gif border=0 usemap=#gulag alt="Олег Филон, Дм. Федорович, Ал-др Качанов">
+<map name=gulag>
+<area shape="rect" coords="0,10,130,25" href=../articles/articles.html alt="Статьи Олега Филона" title=ophil>
+<area shape="rect" coords="0,25,51,37" href=../articles/articles.html alt="Статьи Олега Филона" title=ophil>
+<area shape="rect" coords="140,25,317,40" href=http://www.stihi.ru/avtor/fedorovich alt="Литературная страница Дм. Федоровича" title=df>
+<area shape="rect" coords="60,40,317,55" href=http://www.stihi.ru/avtor/fedorovich alt="Литературная страница Дм. Федоровича" title=df>
+<area shape="rect" coords="290,5,440,20" href=http://www.webmascon.com alt="дизайн А. Качанова" title=community>
+<area shape="rect" coords="343,20,440,38" href=http://www.webmascon.com alt="дизайн А. Качанова" title=community>
+<area shape="default" href=../articles/articles.html alt="Статьи Олега Филона" title=ophil>
+</map></td></tr>
+</table>
+</body>
+</html>

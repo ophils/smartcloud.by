@@ -1,0 +1,56 @@
+vpath %.text src
+vpath %.html articles
+vpath %.err errors
+src  := $(wildcard src/*.text)
+html := $(patsubst %.text,%.html,$(notdir $(src)))
+errs := $(patsubst %.html,%.err,$(html))
+rest := $(wildcard *-table* *.css *.js text2* \
+*-footer m4/stdlib.m4)
+LN=ln -fs
+# LN=cp
+addr := ftp.agava.ru
+define scp
+    scp $@ $(addr):/home/www/temp/
+endef
+define ftp
+lftp -e 'mirr -e -v -R . WWW;bye' $(addr)
+endef
+
+help :
+	./text2html
+	@echo 'Вместо html-разметки имеются макросы типа _em(выделенный текст):'
+	@read -p 'Нажмите ввод для списка макросов ...' proba
+	@grep ^m4_define m4/stdlib.m4|\
+	cut -c 12-|\
+	sed "s/',.*/()/"
+site : $(html) inds
+%.html : %.text $(rest)
+	./text2html $< > articles/$@
+#	konwert koi8r-cp1251 -O articles/$@
+inds:
+	$(LN) articles/gomelug.html index.html
+	$(LN) ../articles/about.html about/index.html
+	$(LN) articles.html articles/index.html
+	$(LN) ../articles/community.html community/index.html
+	$(LN) ../articles/guru.html guru/index.html
+	$(LN) ../articles/newbie.html newbie/index.html
+upload: gulag-arc.tgz
+gulag-arc.tgz: clean site 
+	find -name \*\.html|\
+	xargs tar czf $@ $(rest) src img Makefile robots.txt\
+		articles/copy-softerra articles/mirror.deb-src
+ftp:
+	$(ftp)
+lint : upload
+	linklint -textonly -doc errors /@
+# вызов tidy с ключом -k
+tidy : site $(errs)
+%.err: articles/%.html
+	tidy -raw -e -f errors/$@ $<
+clean :
+	find -name \*\.html -o -name \*\~|\
+	xargs rm -f
+	rm -f *.tgz
+	rm -f articles/*.err articles/*.m4
+	rm -rf errors/*
+PHONY : clean site inds ftp upload help lint tidy

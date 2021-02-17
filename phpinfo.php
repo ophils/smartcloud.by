@@ -1,0 +1,4 @@
+<?
+// dl("mysql.so");
+phpinfo();
+?>

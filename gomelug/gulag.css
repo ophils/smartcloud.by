@@ -1,0 +1,27 @@
+body, p, div, td, th, tr, form, ol, ul, li, input, textarea, select, a
+	{ 	font-family: Verdana,Geneva,Arial,Helvetica,sans-serif;
+		font-size: 11pt;
+    }
+body	{	background: white;
+		margin: 3px;
+    }
+p 	{	display: block;
+		text-align: justify;
+		line-height: 120%;
+		margin: 4px;
+    }	
+b 	{ 	font-weight: bold;
+		color: blue;
+    }
+pre, code, tt { font: "Courier New", Courier, monospace;
+		line-height: 120%;
+		font-size: 11pt;
+    }
+
+a	{	font-family: Verdana,Geneva,Arial,Helvetica,sans-serif;
+		font-size:12pt;
+		text-decoration:underline;
+		color: blue
+    }
+a:hover {	color: red
+    }

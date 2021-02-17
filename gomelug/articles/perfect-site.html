@@ -1,0 +1,243 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional">
+<html><head><meta http-equiv="content-type" content="text/html" charset="utf-8">
+<title>Остров пингвинов. Путь к совершенству</title>
+<meta name="description" lang="ru" content="автоматизация сопровождения сайта классическими Unix инструментами - bash, awk, make, m4">
+<meta name="keywords" lang="en" content="Linux, Unix, LUG, Gomel, Belarus, ex-USSR, hacker, hacks, Debian, free software, shell, bash, textutils, awk, perl, make, m4, tricks, tips, russian">
+<meta name="keywords" lang="ru" content="Линукс, Юникс, Гомель, Беларусь, пользователи Линукс, дебиан, хаки, хакеры, интернет-технологии, Олег П. Филон, web дизайн">
+<meta name="author" content="Олег П. Филон">
+<meta name="copyright" content="&copy; FDL, Олег П. Филон">
+<link rel="e-mail" href="mailto:ophil44@gmail.com">
+<meta name="date" content="2004-01-06">
+<meta name="version" content="1.6">
+<style type="text/css">
+<!--
+body, p, div, td, th, tr, form, ol, ul, li, input, textarea, select, a
+	{ 	font-family: Verdana,Geneva,Arial,Helvetica,sans-serif;
+		font-size: 11pt;
+    }
+body	{	background: white;
+		margin: 3px;
+    }
+p 	{	display: block;
+		text-align: justify;
+		line-height: 120%;
+		margin: 4px;
+    }	
+b 	{ 	font-weight: bold;
+		color: blue;
+    }
+pre, code, tt { font: "Courier New", Courier, monospace;
+		line-height: 120%;
+		font-size: 11pt;
+    }
+
+a	{	font-family: Verdana,Geneva,Arial,Helvetica,sans-serif;
+		font-size:12pt;
+		text-decoration:underline;
+		color: blue
+    }
+a:hover {	color: red
+    }
+-->
+</style>
+<script type="text/javascript" language=JavaScript>
+<!--
+newbie = new Image();
+newbie.src="../img/newbie.gif";
+guru = new Image();
+guru.src="../img/guru.gif";
+comm = new Image();
+comm.src="../img/forum.gif";
+about = new Image();
+about.src="../img/about.gif";
+-->
+</script>
+
+</head><body>
+<table cellpadding=0 cellspacing=3 border=0 summary="макет страницы">
+<tr valign=top><td><a href=../index.html><img src="../img/topbox.gif" alt="Остров пингвинов"></a></td>
+<td height=60 bgcolor="#FFCC33"></td></tr>
+<tr><td colspan=2><img src="../img/blue-line.gif" width=600 height=5
+alt="- - - - - - - - - - - - - - - - - - - - - - -">
+<tr valign=top><td width=131>
+<img name="corner" src="../img/articles.gif" width=125 height=91 alt="Сольные выступления"><br><br>
+<a href="../articles/newbie.html" onmouseover="document.corner.src='../img/newbie.gif';return true" onmouseout="document.corner.src='../img/articles.gif';return true">Для начинающих</a><br><br>
+<a href="../articles/guru.html" onmouseover="document.corner.src='../img/guru.gif';return true" onmouseout="document.corner.src='../img/articles.gif';return true">Для знатоков</a><br><br>
+<a href="../articles/community.html" onmouseover="document.corner.src='../img/forum.gif';return true" onmouseout="document.corner.src='../img/articles.gif';return true">Для души</a><br><br>
+<a href="../articles/about.html" onmouseover="document.corner.src='../img/about.gif';return true" onmouseout="document.corner.src='../img/articles.gif';return true">О нас</a>
+</td><td>
+
+<strong>Путь к совершенству</strong>
+<p align=right> <i>... и выпила  залпом  еще  сто  пятьдесят,<br>
+ибо она была совершенна,а совершенству нет предела...<br>
+Венедикт Ерофеев. Москва - Петушки
+</i>
+<p>
+Выбрав многотрудный путь к совершенству, нам надо с самого начала
+запастись изрядной долей самоиронии. На этом пути, подобно герою Вени
+Ерофеева в поисках Кремля, можно сотни раз искать, но так и не найти. Так
+что давайте с самого начала ограничим наше стремление к идеалу частным
+случаем - попробуем усовершенствовать язык разметки html.
+<p>
+Мы уже посмотрели <a href="../text2html">скрипт</a>, отчасти облегчающий
+сопровождение сайта. Вся служебная информация из заголовка представлена
+теперь в удобоваримом виде.  Рутинные процедуры по компиляции из текста
+в настоящую html страницу, архивированию, загрузке на сервер, проверке
+ссылок и прочему собраны в один <a href="../Makefile">Makefile</a>. Тело
+документа с параграфами, разделёнными пустыми строками, представляет
+собой обычный html код без надоедливых меток &lt;p&gt;.
+<p>
+В программировании, когда есть необходимость сократить часто
+набираемую команду или заменить одно выражение на другое, более
+изящное, используются макросы, или макроподстановки. Это средство
+имеется во многих компиляторах, есть также отдельные специализированные
+макропроцессоры. Давайте глянем, что можно сделать со стандартным для
+Unix'а макропроцессором m4.
+<p>
+Удивительно, но эта крошечная, менее 100 килобайт утилита представляет
+собой настоящий язык программирования. Миниатюрна она также по количеству
+встроеных функций, всего 45. Подобный минимализм внушает надежду что этот
+язык можно освоить за один приём, благо он снабжён подробной документацией
+и хорошими примерами.
+<p>
+Мощь m4 оценили многие программисты. Например, autoconf и automake
+используют макропроцессор m4 для генерации файлов <em>configure</em> и
+<em>Makefile</em> соответственно. Программа <em>sendmail</em> свои файлы настроек
+хранит в виде макросов m4. Интересный пример использования
+этого языка для создания web-сайта предлложил Bob Hepple. В статье
+<a href="http://web.archive.org/web/19980529230944/http://www.linuxgazette.com/issue22/using_m4.html">"Using m4 to write HTML"</a> он описал библиотеку макросов, выполняющих именно то, к чему
+стремимся мы - упростить, усовершенствовать язык html.
+<p>
+Как обычно, вместе с программой <em>m4</em> идёт качественная онлайновая
+документация и примеры. А вот отыскать обычную, бумажную книгу,
+посвященную этому языку, мне не удалось, ни на английском, ни, тем
+более, на русском. Так что воспользуюсь случаем и попробую рассказать
+о собственном опыте знакомства с макропроцессором m4.
+<p>
+Макропроцессор m4 копирует свой стандартный ввод на стандартный вывод,
+попутно обрабатывая все обнаруженные макросы. Макрос может быть либо
+функцией, встроенной в язык, либо определён пользователем. Макросы
+могут иметь произвольное количество аргументов. В числе 45 встроенных
+есть функции перенаправления ввода/вывода, включения файлов, выполнения
+внешних команд, арифметических операций, обработки текста, рекурсии,
+создания новых функций.
+<p>
+Невозможно освоить язык программирования, каким бы простым и лаконичным
+он не был, пока не начнёшь писать программки и пробовать инструмент,
+что называется, руками. Как всегда в случае GNU-программ, вызов
+утилиты с ключём <em>--help</em> покажет опции, с которыми можно запускать
+программы. Начнём изучение языка с получения списка всех встроенных
+функций:
+<blockquote><pre>
+... $ echo dumpdef|m4
+</pre></blockquote>
+<p>
+Здесь, чтобы не возиться с файлами, имя функции подаётся прямо со
+стандартного ввода. Можно также опробовать полезный ключ -P, который
+модифицирует имена всех встроенных функций, добавляя префикс <em>m4</em>. Вот
+что происходит в этом случае:
+<blockquote><pre>
+... $ echo m4_dumpdef|m4 -P
+</pre></blockquote>
+<p>
+Давайте в дальнейших примерах использовать встроенные функции с этим
+префиксом. Это снизит вероятность для макропроцессора принять обычное
+слово за макрос и попытаться его исполнить.
+<p>
+Начнём знакомство со встроенными макросами с функций перенаправления
+вывода. Попробуем, для примера, переставить вводимые строки в другом
+порядке:
+<blockquote><pre>
+... $ echo -e "строка один\nстрока два"
+строка один
+строка два
+... $ echo -e "m4_divert(5)строка один\nm4_divertстрока два"|m4 -P
+строка два
+строка один
+</pre></blockquote>
+<p>
+Здесь функция <em>m4_divert(5)</em> переназначила вывод во временный файл
+под номером 5, а следующий вызов <em>m4_divert</em> без параметра восстановил
+нормальный вывод. После последней строки ввода все отложенные файлы вывода
+печатают свою содержимое по очереди, в соответствии с номерами. Можно
+также вставить содержимое отложенного вывода с помощью команды
+<em>m4_undivert(N)</em>.
+<p>
+Переназначение вида <em>m4_divert(-1)</em> совсем отменяет вывод последующих
+строк.  Эта функция часто используется при определении собственных макросов,
+чтобы не засорять вывод пустыми строками. Другой способ отключить вывод
+символа новой строки - функция <em>m4_dnl</em>. Попробуйте создать у себя вот
+такой файл и обработать его через макропроцессор <em>m4</em>:
+<blockquote><pre>
+... $ cat proba01.m4
+m4_divert(1)m4_dnl
+line 1
+m4_divert(2)m4_dnl
+line 2
+m4_divert`'m4_dnl
+line 3
+m4_undivert(2)m4_dnl
+m4_undivert(1)m4_dnl
+</pre></blockquote>
+<p>
+<em>m4</em> выдаст в этом примере строки в обратном порядке. Здесь
+используется тот же механизм переназначения вывода, но видна ещё одна
+особенность этого языка. Это механизм кавычек, или квотирования. Кавычки в
+m4 служат вместо скобок, поэтому есть отдельные открывающая и закрывающая
+кавычки. Закавыченный текст может простираться на несколько строк,
+символы кавычек можно при желании переопределить. Возможно, именно
+из-за особенностей квотирования этот миниатюрный изящный язык почему-то
+считают сложным.
+<p>
+С исходным кодом <em>m4</em> собраны поучительные примеры. Вкупе со
+встроенными в язык возможностями отладки можно детально увидеть механизм
+работы макропроцессора. Один из примеров демонстрирует использование
+рекурсии на примере задачи <i>Ханойской башни</i>. Вот как работает
+этот макрос:
+<blockquote><pre>
+... $ echo 'hanoi(3)'|m4 hanoi.m4 -
+Move one disk from source to destination.
+Move one disk from source to auxilliary.
+Move one disk from destination to auxilliary.
+Move one disk from source to destination.
+Move one disk from auxilliary to source.
+Move one disk from auxilliary to destination.
+Move one disk from source to destination.
+</pre></blockquote>
+<p>
+Более интересно, однако, будет включить, с помощью опции <em>-d</em>,
+режим трассировки и проследить рекурсию по шагам:
+<blockquote><pre>
+... $ echo 'hanoi(3)'|m4 -dateq hanoi.m4 - 2>&amp;1|less
+</pre></blockquote>
+<p>
+Приглашаю за дальнейшими примерами в <a href="../gulag-arc.tgz">исходники
+сайта</a>. В данном случае исходный код содержит скрипты для сопровождения сайта,
+библиотеку макросов <em>m4</em>, а также оригинальные тексты всех статей.
+<p>
+Как бы мы ни усовершенствовали язык разметки html и процесс сопровождения
+сайта, результат должен быть совершенен ещё в одном отношении - наш код
+не должен содержать ошибок. Здесь удобно воспользоваться парой утилит
+для проверки правильности ссылок и html-кода, соответственно <em>linklint</em>
+и <em>tidy</em>. Вызовы этих утилит выполняются через <em>Makefile</em>.
+<p>
+Утилита <em>tidy</em>, кроме проверки, может автоматически привести вашу
+страничку в приемлемый с точки зрения официальных стандартов вид.  Но,
+поверьте, гораздо приятнее самому довести свой код до такого состояния,
+что сама <em>tidy</em> со всей её скрупулёзностью признаётся, что ни ошибок,
+ни замечаний нет.  Только после этого вы можете утверждать, что сделали
+правильный шаг на пути к совершенству.
+</td></tr><tr><td colspan=2 align=center>
+<img src=../img/footer.gif border=0 usemap=#gulag alt="Олег Филон, Дм. Федорович, Ал-др Качанов">
+<map name=gulag>
+<area shape="rect" coords="0,10,130,25" href=../articles/articles.html alt="Статьи Олега Филона" title=ophil>
+<area shape="rect" coords="0,25,51,37" href=../articles/articles.html alt="Статьи Олега Филона" title=ophil>
+<area shape="rect" coords="140,25,317,40" href=http://www.stihi.ru/avtor/fedorovich alt="Литературная страница Дм. Федоровича" title=df>
+<area shape="rect" coords="60,40,317,55" href=http://www.stihi.ru/avtor/fedorovich alt="Литературная страница Дм. Федоровича" title=df>
+<area shape="rect" coords="290,5,440,20" href=http://www.webmascon.com alt="дизайн А. Качанова" title=community>
+<area shape="rect" coords="343,20,440,38" href=http://www.webmascon.com alt="дизайн А. Качанова" title=community>
+<area shape="default" href=../articles/articles.html alt="Статьи Олега Филона" title=ophil>
+</map></td></tr>
+</table>
+</body>
+</html>

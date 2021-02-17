@@ -1,0 +1,117 @@
+package=deb-non-us
+comment=Mirror sources from non-us.debian.org/debian-non-US
+site=non-us.debian.org
+remote_dir=/debian-non-US/
+#proxy=true
+#proxy_ftp_port=8080
+#proxy_gateway=proxy
+#passive_ftp=true
+ls_lR_file=ls-lR.gz
+local_dir=/home/ftp/pub/debian-non-US
+mail_to=ophil
+# - see /usr/share/doc/mirror/README.Security
+# However, this breaks mirroring of Debian sites.
+#name_mappings=s:\.\./:__/:g
+# save some bandwidth and exclude files matching the following pattern
+exclude_patt=(^|/)(\.mirror$|\.mirror\.log|core$|\.cap|\.in\..*\.$
+exclude_patt+|MIRROR\.LOG|#.*#|\.FSP|\.cache|\.zipped|\.notar|\.message
+exclude_patt+|lost\+found/|Network Trash Folder)|suky.mpe?g
+exclude_patt+|(^|/)dists/(slink/|.*-proposed-updates)
+# –Õ ›…Õ ﬁœ”’–≈…–—œﬁ i386 (ia32)
+exclude_patt+|(^|/)(Old/|dists/(potato|sid|woody|stable|unstable|testing)
+exclude_patt+/non-US/(contrib|main|non-free)
+exclude_patt+/binary-(alpha|arm|hppa|hurd-i386|ia64
+exclude_patt+|m68k|mips|mipsel|powerpc|s390|sh|sparc))
+exclude_patt+|Contents-(all|alpha|arm|hppa|hurd-i386|ia64
+exclude_patt+|m68k|mips|mipsel|powerpc|s390|sh|sparc)\.gz
+# –Õ ›…Õ ’ﬂ”ÕƒÃ’…’
+exclude_patt+|(^|/)dists/(woody|testing|sid|slink)|md5sums\.gz$
+exclude_patt+|(^|/)indices-non-US/Maintainers$|gcc-snapshot
+exclude_patt+|\.deb$|Packages(|\.bz2)$|mozilla-cvs_|mozilla-locale-
+# don't compress file that don't benefit from compression
+compress_excl+|-z(\d+)?$|\.tgz|_tgz|\.tar\.Z|\.tar\.gz|\.taz$|\.arc$|\.zip$|\.lzh$|\.zoo$|\.exe$|\.lha$|\.zom$|\.gif$|\.jpeg$|\.jpg$|\.mpeg$|\.au$|\.shk$|rpm$|deb$|read.*me|index|info|faq|gzip|compress|(^|/)\.\.?$
+#
+# compress using 'gzip'
+compress_prog=gzip
+name_mappings=s:^ls-lR.gz:non-us-deb-ls-lR.gz:
+do_deletes=true
+save_deletes=true
+# dummy trick to exclude manually some big files
+get_size_change=false
+save_dir=Old
+delete_excl=^ls-lR.\gz$|\.mirror$
+# ŒÕ…ﬁ ŒœÕ¿—≈À –Õ ›…Õ ’ﬂ”ÕƒÃ’…’ ’√ /pool/
+delete_excl+|(^|/)dists/|Contents-.*|\.deb$
+#max_delete_files=16%
+#max_delete_dirs=16%
+use_files=true
+#       # Keep a log file in each updated directory
+update_log=.mirror
+
+package=deb-us
+comment=Mirror sources from ftp.debian.org/debian
+site=ftp.debian.org
+remote_dir=/debian/
+#proxy=true
+#proxy_ftp_port=8080
+#proxy_gateway=proxy
+#passive_ftp=true
+ls_lR_file=ls-lR.gz
+local_dir=/home/ftp/pub/debian
+mail_to=ophil
+# - see /usr/share/doc/mirror/README.Security
+# However, this breaks mirroring of Debian sites.
+#name_mappings=s:\.\./:__/:g
+# save some bandwidth and exclude files matching the following pattern
+exclude_patt=(^|/)(\.mirror$|\.mirror\.log|core$|\.cap|\.in\..*\.$
+exclude_patt+|MIRROR\.LOG|#.*#|\.FSP|\.cache|\.zipped|\.notar|\.message
+exclude_patt+|lost\+found/|Network Trash Folder)|suky.mpe?g
+exclude_patt+|(^|/)dists/.*-proposed-updates|Maintainer$
+# –Õ ›…Õ ﬁœ”’–≈…–—œﬁ i386 (ia32)
+exclude_patt+|(^|/)(Old/|dists/(potato|sid|woody|stable|unstable|testing)
+exclude_patt+/(contrib|main|non-free)
+exclude_patt+/binary-(alpha|arm|hppa|hurd-i386|ia64
+exclude_patt+|m68k|mips|mipsel|powerpc|s390|sh|sparc))
+exclude_patt+|Contents-(all|alpha|arm|hppa|hurd-i386|ia64
+exclude_patt+|m68k|mips|mipsel|powerpc|s390|sh|sparc)\.gz
+# –Õ ›…Õ ’ﬂ”ÕƒÃ’…’
+exclude_patt+|(^|/)dists/(woody|testing|sid|slink)|md5sums\.gz$
+exclude_patt+|(^|/)indices-non-US/Maintainers$
+exclude_patt+|\.deb$|Packages(|\.bz2)$|\.udeb$
+# kernel-source, ’ÃÕ⁄√ÿ¬ÃÕ≈ ’÷ÃÕœ’œ—≈À
+exclude_patt+|kernel-source-.*\.tar.gz$
+exclude_patt+|-(cjk|de|de-dev|es|fi|fr|hr|hu|it|ja|ja-dev|ko
+exclude_patt+|nl|pl|pl-dev|pl-html|pt|sv|zh|zh-s|zh-text)_
+exclude_patt+|kanji|japanese|arabic|asian|chinese|european|brazilian|-thai
+exclude_patt+|european|brazilian|british|czech|danish|dutch
+exclude_patt+|french|german|italian|norwegian|polish|portuguese|spanish
+exclude_patt+|swedish|greek|wnn|canna|big5|kakasi-dic
+exclude_patt+|pj-9|lg-base|lg-issue|disks-|upgrade-|kernel-image-
+exclude_patt+|netscape4|-h8300-|-m68k-|lfocus-|-hppa|doc-ja|1-ja|k-ja
+exclude_patt+|xfonts-(baekmuk|cmex-big5p|kaname|kappa20
+exclude_patt+|marumoji|mona|turkish|shinonome)_
+exclude_patt+|Maintainers$|hlatex-fonts_
+#  exclude_patt+|intlfonts_
+# don't compress file that don't benefit from compression
+compress_excl+|-z(\d+)?$|\.tgz|_tgz|\.tar\.Z|\.tar\.gz|\.taz$|\.arc$|\.zip$|\.lzh$|\.zoo$|\.exe$|\.lha$|\.zom$|\.gif$|\.jpeg$|\.jpg$|\.mpeg$|\.au$|\.shk$|rpm$|deb$|read.*me|index|info|faq|gzip|compress|(^|/)\.\.?$
+#
+# compress using 'gzip'
+compress_prog=gzip
+name_mappings=s:^ls-lR.gz:non-us-deb-ls-lR.gz:
+do_deletes=true
+save_deletes=true
+# dummy trick to exclude manually some big files
+get_size_change=false
+save_dir=Old
+delete_excl=^ls-lR.\gz$|\.mirror$
+# ŒÕ…ﬁ ŒœÕ¿—≈À –Õ ›…Õ ’ﬂ”ÕƒÃ’…’ ’√ /pool/
+delete_excl+|(^|/)dists/|Contents-.*|\.deb$
+delete_excl+|pj-9|lg-base|lg-issue|/main/disks-|/main/upgrade-
+delete_excl+|netscape4|lfocus-|disks-i386
+#max_delete_files=16%
+#max_delete_dirs=16%
+use_files=true
+#       # Keep a log file in each updated directory
+update_log=.mirror
+
+

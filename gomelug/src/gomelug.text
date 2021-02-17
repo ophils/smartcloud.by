@@ -1,0 +1,108 @@
+Title: Остров пингвинов. Гомельская группа пользователей Linux
+Description-ru: Остров пингвинов: сайт группы пользователей Линукс, Гомель, Беларусь
+Keywords-en: Linux, Unix, LUG, Gomel, Belarus, ex-USSR, hacker, hacks, Debian, free software, shell, bash, textutils, awk, perl, consultant, expert, microhack, tricks, tips, russian
+Keywords-ru: Линукс, Юникс, Гомель, Беларусь, пользователи Линукс, хаки, хакеры, эксперт, консультант, администрирование, интернет-технологии, серверы, сети, помощь, Дм. Федорович, стихи, проза, поэзия, фантастика, Олег П. Филон, статьи
+Author: Олег П. Филон
+Copyright: FDL, Олег П. Филон
+E-mail: ophil44@gmail.com
+Date: 2002-12-22
+Version: 1.1
+Style-file: gulag.css
+Script-file: gulag.js
+
+<table border=0 cellpadding=0 cellspacing=0 summary="menu + text block">
+<tr><td colspan=2>_link(articles/articles.html,
+<img src="img/ostrov.jpg" border="0" alt="Остров пингвинов">)</td></tr>
+<tr><td colspan=2 bgcolor="#FFCC33"</td></tr>
+<tr><td width=130>
+    <a href="articles/newbie.html"
+        onmouseover="document.newbie.src='img/newbie.gif';return true" 
+        onmouseout="document.newbie.src='img/newbie-bw.gif';return true">
+        <img name="newbie" src="img/newbie-bw.gif" width="125" height="107" border="0"
+	 alt="Для начинающих"></a>
+    <td><a href="articles/newbie.html"
+        onmouseover="document.newbie.src='img/newbie.gif';return true" 
+        onmouseout="document.newbie.src='img/newbie-bw.gif';return true">
+    _em(Для начинающих)</a>
+
+_link(articles/konspect.html,Конспект лекций) проведет вас от входа в систему
+вплоть до самостоятельной сборки программ. _link(articles/sketch_o_heroes.html,
+Этюдо героях невидимого фронта) покажет простые приемы работы с текстом. 
+В конце большой обзорной статьи _link(articles/why-linux.html, Почему Линукс?)
+имеется _link(`articles/why-linux.html#19', глава со ссылками).
+</td>
+</tr>
+<tr><td width=130>
+    <a href="articles/guru.html"
+        onmouseover="document.guru.src='img/guru.gif';return true" 
+        onmouseout="document.guru.src='img/guru-bw.gif';return true">
+        <img name="guru" src="img/guru-bw.gif" width="125" height="107" border="0"
+	alt="Для знатоков"></a>
+    </td>
+    <td><a href="articles/guru.html"
+        onmouseover="document.guru.src='img/guru.gif';return true" 
+        onmouseout="document.guru.src='img/guru-bw.gif';return true">
+    _em(Для знатоков)</a>
+
+В этом разделе предлагаем посмотреть на некоторые приемы эффективной
+работы и программирования - _link(articles/micro-hacks.html, микро-хаки),
+заметки о _link(articles/sysadm-debian.html, системном администрировании).
+Помещена также _link(articles/crisis_prog.html, полемическая заметка
+о кризисе ПО) и некоторые выдержки из ее обсуждения.
+</td></tr>
+<tr><td width=130>
+    <a href="articles/community.html"
+        onmouseover="document.comm.src='img/forum.gif';return true" 
+        onmouseout="document.comm.src='img/forum-bw.gif';return true">
+<img name="comm" src="img/forum-bw.gif" width="125" height="91" border="0"
+	alt="Для души"></a>
+    </td>
+    <td>
+    <a href="articles/community.html"
+        onmouseover="document.comm.src='img/forum.gif';return true" 
+        onmouseout="document.comm.src='img/forum-bw.gif';return true">
+    _em(Для души)</a><br>
+    
+_link(http://www.stihi.ru/avtor/fedorovich, Литературная страница) Дмитрия Федоровича -
+прирожденного поэта, переквалифицировавшегося в веб-программиста, переехала
+на _link(http://www.stihi.ru/avtor/fedorovich, новый адрес). 
+_link(articles/krik-01.html, Крик души #01) Олега П. Филона.
+Советуем слегка приглушить звук динамиков :-).
+</td>
+</tr>
+<tr><td width=130>
+    <a href="articles/about.html"
+        onmouseover="document.about.src='img/about.gif';return true" 
+        onmouseout="document.about.src='img/about-bw.gif';return true">
+<img name="about" src="img/about-bw.gif" width="125" height="91" border="0"
+	 alt="О нас, любимых"></a>
+    </td>
+    <td>
+    <a href="articles/about.html"
+        onmouseover="document.about.src='img/about.gif';return true" 
+        onmouseout="document.about.src='img/about-bw.gif';return true">
+_em(О нас)</a>
+
+О Гомельской группе пользователей Linux (GomeLUG), о наших проектах
+и о нас самих. _link(articles/articles.html, Полное собрание сочинений)
+_link(mailto:ophil44@gmail.com, Олега П. Филона)
+.
+</td></tr><tr><td colspan=2 align=center>
+<img src=img/footer.gif border=0 usemap=#gulag alt="Олег Филон, Дм. Федорович, Ал-др Качанов">
+<map name=gulag>
+<area shape="rect" coords="0,10,130,25" href=articles/articles.html
+alt="Статьи Олега Филона" title=ophil> <area shape="rect"
+coords="0,25,51,37" href=articles/articles.html alt="Статьи Олега
+Филона" title=ophil> <area shape="rect" coords="140,25,317,40"
+href=http://www.stihi.ru/avtor/fedorovich alt="Литературная страница
+Дм. Федоровича" title=df> <area shape="rect" coords="60,40,317,55"
+href=http://www.stihi.ru/avtor/fedorovich alt="Литературная страница Дм. Федоровича"
+ title=df> <area shape="rect" coords="290,5,440,20"
+href=http://www.webmascon.com alt="дизайн А. Качанова" title=community>
+<area shape="rect" coords="343,20,440,38" href=http://www.webmascon.com
+alt="дизайн А. Качанова" title=community> <area shape="default"
+href=articles/articles.html alt="Статьи Олега Филона" title=ophil>
+</map></td></tr>
+</table>
+</body>
+</html>

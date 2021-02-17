@@ -1,0 +1,170 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional">
+<html><head><meta http-equiv="content-type" content="text/html" charset="utf-8">
+<title>Остров пингвинов. Статьи Олега П. Филона</title>
+<meta name="description" lang="ru" content="статьи Олега П. Филона, группа пользователей Линукс, Гомель, Беларусь">
+<meta name="description" lang="en" content="Oleg P. Philon articles, Gomel Linux User's Group, Belarus">
+<meta name="keywords" lang="en" content="Linux, Unix, LUG, Oleg P. Philon, articles, Gomel, Belarus, ex-USSR, hacker, hacks, Debian, free software, shell, bash, textutils, awk, perl, consultant, expert, microhack, tricks, tips, russian, d-r Anticommunii, anticommunist, communism, philosophy">
+<meta name="keywords" lang="ru" content="Линукс, Юникс, Гомель, Беларусь, пользователи Линукс, Олег П. Филон, статьи, микрохаки, хакер, эксперт, консультант, д-р Антикоммуний, антикоммунист, коммунизм, философия, сатира">
+<meta name="author" content="Олег П. Филон">
+<meta name="copyright" content="&copy; FDL, Олег П. Филон">
+<link rel="e-mail" href="mailto:ophil44@gmail.com">
+<meta name="date" content="2002-12-22">
+<meta name="version" content="1.1">
+<style type="text/css">
+<!--
+body, p, div, td, th, tr, form, ol, ul, li, input, textarea, select, a
+	{ 	font-family: Verdana,Geneva,Arial,Helvetica,sans-serif;
+		font-size: 11pt;
+    }
+body	{	background: white;
+		margin: 3px;
+    }
+p 	{	display: block;
+		text-align: justify;
+		line-height: 120%;
+		margin: 4px;
+    }	
+b 	{ 	font-weight: bold;
+		color: blue;
+    }
+pre, code, tt { font: "Courier New", Courier, monospace;
+		line-height: 120%;
+		font-size: 11pt;
+    }
+
+a	{	font-family: Verdana,Geneva,Arial,Helvetica,sans-serif;
+		font-size:12pt;
+		text-decoration:underline;
+		color: blue
+    }
+a:hover {	color: red
+    }
+-->
+</style>
+<script type="text/javascript" language=JavaScript>
+<!--
+newbie = new Image();
+newbie.src="../img/newbie.gif";
+guru = new Image();
+guru.src="../img/guru.gif";
+comm = new Image();
+comm.src="../img/forum.gif";
+about = new Image();
+about.src="../img/about.gif";
+-->
+</script>
+
+</head><body>
+<table cellpadding=0 cellspacing=3 border=0 summary="макет страницы">
+<tr valign=top><td><a href=../index.html><img src="../img/topbox.gif" alt="Остров пингвинов"></a></td>
+<td height=60 bgcolor="#FFCC33"></td></tr>
+<tr><td colspan=2><img src="../img/blue-line.gif" width=600 height=5
+alt="- - - - - - - - - - - - - - - - - - - - - - -">
+<tr valign=top><td width=131>
+<img name="corner" src="../img/articles.gif" width=125 height=91 alt="Сольные выступления"><br><br>
+<a href="../articles/newbie.html" onmouseover="document.corner.src='../img/newbie.gif';return true" onmouseout="document.corner.src='../img/articles.gif';return true">Для начинающих</a><br><br>
+<a href="../articles/guru.html" onmouseover="document.corner.src='../img/guru.gif';return true" onmouseout="document.corner.src='../img/articles.gif';return true">Для знатоков</a><br><br>
+<a href="../articles/community.html" onmouseover="document.corner.src='../img/forum.gif';return true" onmouseout="document.corner.src='../img/articles.gif';return true">Для души</a><br><br>
+<a href="../articles/about.html" onmouseover="document.corner.src='../img/about.gif';return true" onmouseout="document.corner.src='../img/articles.gif';return true">О нас</a>
+</td><td>
+
+<p>
+<strong>Статьи</strong>
+<p>
+Прежде всего хочу выразить признательность фирме
+<a href="http://www.agava.ru">Агава</a> за предоставленный хостинг. А теперь
+предлагаю посмотреть мои заметки, написанные в разное время и по разным
+поводам.
+<ul>
+<li> <a href="why-linux.html">Почему Линукс?</a> версия 1.7
+	от 2003.05.03<br> Моё первое и неожиданное сочинение. Более
+	<a href="why-linux.html">подробная история</a> приведена в конце
+	самой статьи. Вместе со статьёй размещены также свободно
+	распространяемые <a href="GPL.rus.html">лицензия ГНЮ GPL</a> и
+	<a href="manifesto.rus.html">манифест ГНЮ</a> Ричарда М. Столмена,
+	оба документа в русском переводе.
+<li> <a href="crisis_prog.html">Полемическая заметка о кризисе
+	программирования</a>, ноябрь 1999г.
+<li> <a href="sketch_o_heroes.html">Этюд о героях невидимого фронта</a>,
+	декабрь 1999г.	Эта и предыдущая заметки написаны для
+	образовательного сайта <a href="http://www.citforum.ru">Цитфорум</a>.
+<li> <a href="telecom-story.html">История одного проекта</a>, январь
+	2000г.<br> Воспоминания по поводу создания сайта <strong>Остров
+	Пингвинов</strong> нашей Гомельской группы пользователей Линукс. Хостинг
+	любезно предоставлен фирмой <a href="http://www.agava.ru">Агава</a>.
+<li> <a href="lab-rab-mysql.html">Лабораторная работа
+	по СУБД MySQL</a>, декабрь 2000г.<br> Результат
+	моих опытов с языком SQL. Позже опубликована на
+	<a href="http://www.citforum.ru/database/articles/labsql.shtml">Цитфоруме</a>.
+<li> <a href="phone-db.html">Пример на AWK генерации телефонного
+	справочника</a>, декабрь 2000г.  Дополнение к предыдущей заметке,
+	генератор данных для опытов с БД.
+<li> <a href="readers-mail.html">Полемика по статье о кризисе
+	ПО</a>, декабрь 2000г.  Перечитана и собрана в заметку личная
+	переписка по поводу статьи о кризисе ПО.  Добавлено замечание
+	о <a href="readers-mail.html#politika">"левизне"</a> свободного ПО.
+<li> <a href="krik-01.html"><strong>Крики души.</strong> Крик души # 01</a>,
+	январь 2001г.  Позволил себе высказаться о наболевшем. Не
+	поверите, но немного полегчало. Т.е. наши города, конечно,
+	чище не стали, но я стал, как и остальные люди, обращать на это
+	меньше внимания.
+<li> <a href="micro-hacks.html">Микро хаки</a>, январь 2001г. Разбирал
+	домашний каталог, насобирал всяких, надеюсь, полезных мелочей.
+<li> <a href="konspect.html">Линукс для начинающих</a>, весна 2001г.<br>
+	Конспект лекций для учебного центра <a href="http://unix.ipc.ru">Unix</a>, фирма <a href="http://www.ipc.ru">IP Communications</a>, Москва.
+<li> Дальнейшие нетехнические сочинения благополучно переехали на
+	<a href="http://anticommunist.narod.ru">anticommunist.narod.ru</a>.
+<ul>
+<li> <a href="http://anticommunist.narod.ru">В помощь выздоравливающим</a>...
+<li> <a href="http://anticommunist.narod.ru/anon_com.html">Уголок анонимного коммуниста</a>
+<li> <a href="http://anticommunist.narod.ru/besedy.html">Беседы д-ра Антикоммуния</a>
+<li> <a href="http://anticommunist.narod.ru/beseda01.html">Беседа первая</a>.
+	Проект задуман и домен зарегистрирован в декабре 2000г. Первый
+	вариант сайта опубликован в июне 2001г.
+<li> <a href="http://anticommunist.narod.ru/beseda02.html">Беседа вторая</a>.
+	Жаркое лето 2001г., самый конец июля.  Дальнейшие попытки хакера
+	понять механизм коммунизма.
+<li> <a href="http://anticommunist.narod.ru/gensek.html">Исповедь Генсека</a>,
+	14 октября 2001г. Потратил на исповедь воскресный день. Отдохнул
+	с Генсеком отлично, читал и веселился.
+</ul>
+<li> <a href="debian.html">Дебьян</a>, март 2002г.
+	О проекте, дистрибутиве, архиве. Опыт создания локального зеркала
+	архива Дебьян. Доклад для V Республиканской научной конференции,
+	Гомель, ГГУ им. Скарины, март 2002г.
+<li> <a href="copysite.html">Копируем сайт</a>, апрель 2002г.<br>
+	Простой скрипт для копирования отдельных рубрик
+	с сайта <a href="http://www.softerra.ru">http://www.softerra.ru</a>.
+	Софтерра сочла возможным опубликовать статью
+	о <a href="http://www.softerra.ru/program/17426/print.html">копировании себя самой</a> на своём же сайте.
+<li> <a href="sysadm-debian.html">Системное и сетевое администрирование</a>,
+	июль 2002г.<br> Конспект небольшого курса, проведённого в Гомельском
+	интернет-центре по инициативе Александра Махонина.
+<li> <a href="stories.html">Компьютерные истории</a>, январь 2003г.<br>
+	В Гомельской вечерней газете "100%" есть ежемесячная рубрика
+	"Интернет-кафе".  Попробовал на доступном уровне рассказать о
+	проблемах программной индустрии.
+<li> <a href="make-site.html">Делаем сайт</a>, май 2003г.<br>
+	Выбрал время немного упростить сопровождение сайта.  Отрывочные
+	мысли о web-программировании.
+<li> <a href="perfect-site.html">Путь к совершенству</a>, июнь 2003г.<br>
+	Использование макроязыка <em>m4</em> для усовершенствования языка
+	HTML.
+<li> <a href="legal-soft.html">Этапы легализации софта</a>, июнь 2004г.<br>
+	Доклад для Линукс Фест-6 и I международной конференции разрабочиков
+	свободного ПО на Протве.
+</ul>
+</td></tr><tr><td colspan=2 align=center>
+<img src=../img/footer.gif border=0 usemap=#gulag alt="Олег Филон, Дм. Федорович, Ал-др Качанов">
+<map name=gulag>
+<area shape="rect" coords="0,10,130,25" href=../articles/articles.html alt="Статьи Олега Филона" title=ophil>
+<area shape="rect" coords="0,25,51,37" href=../articles/articles.html alt="Статьи Олега Филона" title=ophil>
+<area shape="rect" coords="140,25,317,40" href=http://www.stihi.ru/avtor/fedorovich alt="Литературная страница Дм. Федоровича" title=df>
+<area shape="rect" coords="60,40,317,55" href=http://www.stihi.ru/avtor/fedorovich alt="Литературная страница Дм. Федоровича" title=df>
+<area shape="rect" coords="290,5,440,20" href=http://www.webmascon.com alt="дизайн А. Качанова" title=community>
+<area shape="rect" coords="343,20,440,38" href=http://www.webmascon.com alt="дизайн А. Качанова" title=community>
+<area shape="default" href=../articles/articles.html alt="Статьи Олега Филона" title=ophil>
+</map></td></tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,613 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional">
+<html><head><meta http-equiv="content-type" content="text/html" charset="utf-8">
+<title>Лабораторная работа по реляционным СУБД и языку SQL</title>
+<meta name="description" lang="ru" content="Лабораторная работа по реляционным СУБД и языку SQL на примере MySQL, выполнена Олегом П. Филоном, группа пользователей Линукс, Гомель, Беларусь. Создание простой БД телефонного справочника города">
+<meta name="keywords" lang="en" content="Linux, Unix, LUG, Oleg P. Philon, articles, Gomel, Belarus, ex-USSR, hacker, hacks, Debian, free software, MySQL, SQL, awk, consultant, expert, microhack, tricks, tips, russian, education, example">
+<meta name="keywords" lang="ru" content="Линукс, Юникс, Гомель, Беларусь, пользователи Линукс, Олег П. Филон, статьи, хаки, хакеры, эксперт, консультант, администрирование, серверы, сети, помощь, обучение, базы данных, пример">
+<meta name="author" content="Олег П. Филон">
+<meta name="copyright" content="&copy; FDL, Олег П. Филон">
+<link rel="e-mail" href="mailto:ophil44@gmail.com">
+<meta name="date" content="2002-12-22">
+<meta name="version" content="1.1">
+<style type="text/css">
+<!--
+body, p, div, td, th, tr, form, ol, ul, li, input, textarea, select, a
+	{ 	font-family: Verdana,Geneva,Arial,Helvetica,sans-serif;
+		font-size: 11pt;
+    }
+body	{	background: white;
+		margin: 3px;
+    }
+p 	{	display: block;
+		text-align: justify;
+		line-height: 120%;
+		margin: 4px;
+    }	
+b 	{ 	font-weight: bold;
+		color: blue;
+    }
+pre, code, tt { font: "Courier New", Courier, monospace;
+		line-height: 120%;
+		font-size: 11pt;
+    }
+
+a	{	font-family: Verdana,Geneva,Arial,Helvetica,sans-serif;
+		font-size:12pt;
+		text-decoration:underline;
+		color: blue
+    }
+a:hover {	color: red
+    }
+-->
+</style>
+<script type="text/javascript" language=JavaScript>
+<!--
+newbie = new Image();
+newbie.src="../img/newbie.gif";
+guru = new Image();
+guru.src="../img/guru.gif";
+comm = new Image();
+comm.src="../img/forum.gif";
+about = new Image();
+about.src="../img/about.gif";
+-->
+</script>
+
+</head><body>
+<table cellpadding=0 cellspacing=3 border=0 summary="макет страницы">
+<tr valign=top><td><a href=../index.html><img src="../img/topbox.gif" alt="Остров пингвинов"></a></td>
+<td height=60 bgcolor="#FFCC33"></td></tr>
+<tr><td colspan=2><img src="../img/blue-line.gif" width=600 height=5
+alt="- - - - - - - - - - - - - - - - - - - - - - -">
+<tr valign=top><td width=131>
+<img name="corner" src="../img/articles.gif" width=125 height=91 alt="Сольные выступления"><br><br>
+<a href="../articles/newbie.html" onmouseover="document.corner.src='../img/newbie.gif';return true" onmouseout="document.corner.src='../img/articles.gif';return true">Для начинающих</a><br><br>
+<a href="../articles/guru.html" onmouseover="document.corner.src='../img/guru.gif';return true" onmouseout="document.corner.src='../img/articles.gif';return true">Для знатоков</a><br><br>
+<a href="../articles/community.html" onmouseover="document.corner.src='../img/forum.gif';return true" onmouseout="document.corner.src='../img/articles.gif';return true">Для души</a><br><br>
+<a href="../articles/about.html" onmouseover="document.corner.src='../img/about.gif';return true" onmouseout="document.corner.src='../img/articles.gif';return true">О нас</a>
+</td><td>
+
+<p>
+<strong>Лабораторная работа по реляционным СУБД и языку SQL</strong>
+<p align=right><i>Copyright(С) Олег П. Филон<br>
+декабрь 2000, Гомель, BY<br>
+<a href="mailto:ophil44@gmail.com">ophil44@gmail.com</a></i><br>
+<p>
+Заняться выполнением этой лабораторной работы меня побудили несколько
+причин. Во-первых, занимаясь построением серверов и сетей на основе
+Линукса, я догадывался, что где-то совсем рядом лежит сказочно богатый
+континент, пока не нанесенный на мою карту компьютерного мира. Во-вторых,
+авторы одной из самых популярных открытых программ - СУБД MySQL, недавно
+приняли GNU GPL (General Public License) как лицензию, по которой
+распространяется эта программа, и теперь MySQL является полноценным
+проектом GNU.  Эти юридические тонкости имеют самое непосредственное
+отношение к нам, пользователям, чему я немного ниже приведу пример. И
+наконец, в-третьих, пытаясь отыскать хорошие руководства по SQL в сети,
+я в конце концов обнаружил, что самые лучшие он-лайновые учебники по этой
+теме, оказывается, написаны нашими соотечественниками, на русском языке,
+и лежат у меня на диске - в зеркале сервера
+<a href="http://www.citforum.ru">CITFORUM</a>.
+<p>
+Особенно полезны учебный курс
+<a href="http://www.citforum.ru/database/dblearn/index.shtml">Введение
+в системы управления базами данных</a> Пушникова А.Ю., и курс лекций
+<a href="http://www.citforum.ru/database/osbd/contents.shtml">Основы
+современных баз данных</a> Сергея Кузнецова.  Недавно к ним добавилось
+подробное <a href="http://www.citforum.ru/database/mysqldoc/index.shtml">
+описание СУБД MySQL</a>, сделанное Паутовым Алексеем Валентиновичем на
+основе оригинальной документации и такое же доскональное.
+<p>
+Итак, пришла пора взяться за учебники, а для меня еще и достать
+припасенный для такого случая особый файл. Этот файл представляет собой
+телефонный справочник службы 09 нашего города, пару лет назад попавший
+в местную ФИДО-сеть. Мне не очень важна его актуальность, зато очень
+подходит его размер - свыше 120 тысяч записей. Очень часто примеры,
+даваемые в учебниках, являются слишком игрушечными, чтобы вызывать
+интерес. Затем, на крошечной БД невозможно почувствовать скорость и мощь
+современных программ и компьютеров, или наоборот, плохо настроенную БД
+или неправильно составленный запрос.  Кроме этого, ситуация с построеним
+БД вокруг уже имеющихся данных вполне жизненна.
+<p>
+Вполне возможно, что у вас файла с такими данными в пределах 
+досягаемости нет. Ничего страшного - его можно сделать самому,
+использовав подручные средства - например, взять простой текстовый файл,
+обычные textutils, и интерпретатор языка awk. Пример, как это можно
+сделать, приведен здесь:
+<a href="phone-db.html">генерация случайного телефонного справочника</a>.
+Конечно, данные в таком файле будут только внешне похожими
+на настоящий телефонный справочник.
+<p>
+Для начала надо установить на вашем компьютере MySQL. Не буду
+пересказывать главы из документации, имеющиеся в описании Алексея Паутова.
+Скажу лишь, что для установленного у меня дистрибутива Дебьян установка
+программы свелась к выполнению команды:
+<blockquote><pre>
+...$ dpkg -i mysql-server_номер_версии.deb mysql-client_номер_версии.deb
+</pre></blockquote>
+<p>
+В дистрибутиве Mandrake, который я также иногда ставлю, используется
+программа-установщик rpm с соответствующими ключиками, или же какая-то
+из графических надстроек над rpm. Вполне возможно, что в вашей Линукс
+системе эта СУБД установилась сама собой по умолчанию.
+<p>
+Инсталяция MySQL под Windows, равно как и Apache, PHP и Perl,
+рассказана Дмитрием Котеровым на том же
+<a href="http://www.citforum.ru/internet/articles/apache_perl.shtml#cont6">ЦИТФоруме</a>.
+<p>
+Предупреждаю, однако, что все, что написано ниже, проверено только
+под Линуксом.
+<p>
+Если вам повезло, и команда
+<blockquote><pre>
+...$ mysql
+</pre></blockquote>
+<p>
+из вашего шелла выдала приглашение наподобие:
+<blockquote><pre>
+Welcome to the MySQL monitor.  Commands end with ; or \g.  Your MySQL
+connection id is 28 to server version: 3.22.32-log
+ 
+Type 'help' for help.
+ 
+mysql&gt;
+</pre></blockquote>
+<p>
+, то в ответ на него наберите \q, оставим на время интерпретатор SQL
+запросов, и займемся администрированием сервера MySQL.
+<p>
+Прежде всего, надеюсь, вы установили пароль администратора сервера БД, и
+пока его не забыли. Теперь нужно завести пользователей и дать им некоторые
+права. Все администрирование ведется через обычные таблицы MySQL, их
+правка также осуществляется стандартными SQL командами. Самая первая
+таблица, которая определяет допуск юзера к серверу, так и называется
+- user.  Давайте глянем, кто у нас там есть и что он может делать:
+<blockquote><pre>
+...$ mysqldump -u root -p --opt mysql user&gt;mysql-users.sql
+</pre></blockquote>
+<p>
+После выполнения этой команды у нас появился файл mysql-users.sql
+Загрузим его в текстовый редактор, чтобы поподробнее изучить, и, возможно,
+немного поправить.
+<blockquote><pre>
+# MySQL dump 7.1
+#
+# Host: localhost    Database: mysql
+#--------------------------------------------------------
+# Server version	3.22.32-log
+#
+# Table structure for table 'user'
+#
+DROP TABLE IF EXISTS user;
+CREATE TABLE user (
+  Host char(60) DEFAULT '' NOT NULL,
+  User char(16) DEFAULT '' NOT NULL,
+  Password char(16) DEFAULT '' NOT NULL,
+  Select_priv enum('N','Y') DEFAULT 'N' NOT NULL,
+  Insert_priv enum('N','Y') DEFAULT 'N' NOT NULL,
+  Update_priv enum('N','Y') DEFAULT 'N' NOT NULL,
+  Delete_priv enum('N','Y') DEFAULT 'N' NOT NULL,
+  Create_priv enum('N','Y') DEFAULT 'N' NOT NULL,
+  Drop_priv enum('N','Y') DEFAULT 'N' NOT NULL,
+  Reload_priv enum('N','Y') DEFAULT 'N' NOT NULL,
+  Shutdown_priv enum('N','Y') DEFAULT 'N' NOT NULL,
+  Process_priv enum('N','Y') DEFAULT 'N' NOT NULL,
+  File_priv enum('N','Y') DEFAULT 'N' NOT NULL,
+  Grant_priv enum('N','Y') DEFAULT 'N' NOT NULL,
+  References_priv enum('N','Y') DEFAULT 'N' NOT NULL,
+  Index_priv enum('N','Y') DEFAULT 'N' NOT NULL,
+  Alter_priv enum('N','Y') DEFAULT 'N' NOT NULL,
+  PRIMARY KEY (Host,User)
+);
+</pre></blockquote>
+<blockquote><pre>
+#
+# Dumping data for table 'user'
+#
+ 
+LOCK TABLES user WRITE;
+INSERT INTO user VALUES
+ ('localhost','root','','Y','Y','Y','Y','Y','Y','Y','Y',...),
+ ('localhost','ophil','','N','N','N','N','Y','N','Y','N',...),
+ ('localhost','proba','','N','N','N','N','N','N','N','N',...);
+UNLOCK TABLES;
+</pre></blockquote>
+<p>
+Вот уже и показались первые SQL-предложения, хотя мы пока не начинали
+программировать или что-либо запрашивать. В предложении CREATE TABLE
+перечислены все 14 различных привилегий, которые могут иметь или быть
+лишены пользователи. Первые 6 - Select, Insert, Update, Delete, Create и
+Drop, касаются права пользователя работать с записями таблиц и с самими
+таблицами.  Следующие 4 - Reload, Shutdown, Process и File - касаются
+сервера в целом. Привилегии Grant, References, Index и Alter дают право
+передавать права, а также изменять, связывать и индексировать таблицы.
+<p>
+Два важных замечания.
+<p>
+Во-первых, права, данные в этой таблице, по умолчанию распространяются на
+все БД, имеющиеся на сервере. Поэтому не давайте в этой таблице никаких
+привилегий, касающихся таблиц. Более тонко, с точностью до отдельных полей
+и адресов хостов, права пользователей настраиваются в других таблицах,
+а эта таблица должна только разрешать вход на сервер.
+<p>
+Во-вторых, привилегии, касающиеся сервера в целом, настраиваются только
+в этой таблице, и хотя бы один пользователь, в данном случае root,
+должен иметь эти привилегии, иначе сервер станет неуправляемым.
+<p>
+Если в ваши планы входит дать доступ к серверу всем пользователям
+и под любым именем, заведите пользователя с пустым именем ''.
+Те же правила применяются к именам и адресам компьютеров-хостов.
+<p>
+Теперь, размножив и поправив записи в таблице, но ни в коем случае не
+ее структуру, отправим команды обратно в MySQL.
+<blockquote><pre>
+...$ mysql -u root -p &lt; mysql-users.sql
+</pre></blockquote>
+<p>
+и попросим сервер перечитать измененные права
+<blockquote><pre>
+...$ mysqladmin -u root -p reload
+</pre></blockquote>
+<p>
+Еще одно замечание насчет паролей. В рассмотренном нами файле поля паролей
+пусты, и это надо немедленно исправить. Править их в текстовом файле
+неудобно, потому что MySQL используем для шифрования пароля отдельную
+программу, и хранит пароль в зашифрованом виде. Чтобы установить пароль,
+например, пользователю "proba", надо выполнить такую команду:
+<blockquote><pre>
+...$ mysql mysql -e 'update user set password=password("0") where user="proba";'
+</pre></blockquote>
+<p>
+Поздравляю, мы только что составили и выполнили первый SQL запрос в
+нашей лабораторной работе, хотя и сделали это из командной строки,
+со всеми ее удобствами и неудобствами. К неудобствам можно отнести то,
+что наш пароль высветился на экране, мог попасть в список процессов,
+в разные журнальные файлы. Будет лучше не полениться, запустить монитор
+mysql и задавать пароли в нем с помощью того же запроса внутри СУБД MySQL.
+<p>
+Отличие от обычной системы паролей в том, что имена пользователей БД могут
+быть не связаны с их регистрационными именами в системе, пользователи
+не могут менять свои пароли, и этот пароль известен администратору БД.
+<p>
+Разобравшись с самой первой административной таблицей user, остальные
+таблицы: db, host, tables_priv, columns_priv, func - правим аналогично.
+<p>
+Каждую из команд, посылаемую MySQL, можно задавать либо в
+мониторе запросов mysql, либо из командной строки, либо создав
+файл и отправив его в интерпретатор MySQL через тот же монитор.
+Можно также обратиться к MySQL через интерфейсы с другими языками
+программирования из программ, написанных на C, Perl, PHP, Python
+и других.
+<p>
+Вывод на экран может немного отличаться в каждом случае, а также
+в зависимости от того, на экран или в файл (конвейер) направлен
+вывод. При работе в интерпретаторе всегда сообщается время,
+потраченное на выполнение запроса, а при выводе в файл (конвейер)
+не рисуется рамочка вокруг таблицы. Это делается только для
+нашего удобства, и не влияет ни на результат, ни на сам SQL запрос.
+<p>
+Итак, обговорив разные способы ввода команд и вывода результата,
+займемся собственно SQL предложениями и преобразованием исходных
+данных. Доставшийся мне по случаю файл 09phone.txt представляет собой
+текстовый файл с полями в фиксированых колонках, как здесь :
+<blockquote><pre>
+107003  банки "приорбанк"        первомайская ул.         1   бнк
+107007  центры информацио        жукова ул.               4а  цен
+107026  предприятия транс        артиллерийская ул.       8а  пре
+</pre></blockquote>
+<p>
+и каждая запись содержит 5 полей:
+<blockquote><pre>
+1. номер телефона
+2. фамилия или название организации
+3. улица
+4. номер дома
+5. номер квартиры или примечание
+</pre></blockquote>
+<p>
+Если бы исходные данные пришли из другой SQL БД и были в виде, как
+уже изученная нами таблица user, все, что нам пришлось бы сделать, это
+отправить в интерпретатор этот файл. Если бы текстовый файл был в более
+удобоваримом виде, например, с полями, разделенными знаками табуляции,
+то загрузить его в таблицу также можно было бы за один шаг. Но в нашем
+случае придется создать временную таблицу
+<blockquote><pre>
+create table tmp
+(
+    line varchar(80)
+);
+</pre></blockquote>
+<p>
+и импортировать в нее данные с помощью
+<blockquote><pre>
+load data infile '/tmp/09phone.txt' into table tmp;
+</pre></blockquote>
+<p>
+Таким образом мы записали в таблицу tmp каждую запись как строку без
+разделения на поля.  Импорт занял на моем компьютере около 4.4 сек. Здесь
+и далее и привожу время только для сравнения, для своего компьютера и
+настроек программы, сделанных по умолчанию.
+<p>
+Следующий шаг - извлечь данные из полей на фиксированных
+позициях и поместить их в промежуточную таблицу old
+с теми же полями, что и в исходной БД.
+<p>
+Сначала создадим таблицу
+<blockquote><pre>
+create table old
+(
+	phonum int unsigned not null,
+	title varchar(64) not null,
+	street varchar(40) not null,
+	bldng varchar(8) not null,
+	other varchar(8) not null
+);
+</pre></blockquote>
+<p>
+а затем заполняем ее данными, пройдя по всем строкам таблицы tmp:
+<blockquote><pre>
+insert into old
+	( phonum, title, street, bldng, other )
+select
+	trim(mid(line,1,6)),
+	trim(mid(line,8,18)),
+	trim(mid(line,34,19)),
+	trim(mid(line,58,4)),
+	trim(mid(line,63,3))
+from tmp;
+</pre></blockquote>
+<p>
+Функция mid(...) извлекает из первого аргумента подстроку в соответствующих
+позициях, а функция trim(...) удаляет пробелы в начале и конце строки.
+Теперь можно спокойно сделать
+<blockquote><pre>
+drop table tmp;
+</pre></blockquote>
+<p>
+Опять же, только для сравнения, 123 тысячи записей обработаны за 8.6 сек.
+Для того, чтобы узнать время запроса из программы, содержащей все команды
+и выполняемой неинтерактивно, пришлось применить такой способ:
+<blockquote><pre>
+create table times
+(
+    start int unsigned
+);
+insert into times values ( unix_timestamp() );
+</pre></blockquote>
+<p>
+Чистый SQL и MySQL не поддерживают никаких иных переменных, кроме таблиц
+и полей, так что для хранения времени пришлось завести отдельную таблицу.
+Нет также ничего похожего на print или echo, так что сообщать результат
+получилось только злоупотребив оператором select:
+<blockquote><pre>
+select "импорт данных выполнен: ",unix_timestamp()-start," сек." from times;
+</pre></blockquote>
+<p>
+Получившаяся таблица old еще нуждается в нормализации, но уже первые
+тривиальные запросы выявили одну проблему. Сортировка по алфавиту
+использовала по умолчанию чуждую русскому языку кодировку ISO-8859-1. Хотя
+в последних версиях, возможно, уже можно менять порядок сортировки на
+ходу, в той версии, которая входит в Debian v2.2, для правильной работы
+с русским языком необходима перекомпиляция (сборка) программы с параметром
+<blockquote><pre>
+...$ ./configure --with-charset=koi8_ru
+</pre></blockquote>
+<p>
+В Debian'е для сборки пакетов есть масса скриптов, которые и делают всю работу.
+Таким образом, поправив файл debian/rules и произведя магическое заклинание
+<blockquote><pre>
+...$ debuild -b -uc 2&gt;&amp;1|tee build.log
+</pre></blockquote>
+<p>
+вскоре я получил готовый к инсталяции пакет с правильным понятием по-русски.
+<p>
+Но тут же возникла следующая проблема. FSF (Free Software Foundation)
+и Debian очень щепетильно относятся к любым ограничениям на свободу
+программ, и те ограничения на коммерческое использование MySQL,
+которые были в их старой лицензии, привели к тому, что MySQL оказался
+в секции non-free. Желание иметь клиентскую часть свободной вынудило
+разработчиков вырезать из оригинальных исходников чисто GPL-ные куски и
+образовать отдельное дерево исходников.  По-английски это называется
+"fork", а в русском языке вполне подходит слово "раскол". Хотя это
+слово и с маленькой буквы, явление весьма неприятное, распыляющее силы
+разработчиков и создающее неудобства пользователям. В моем случае пришлось
+пересобирать также и GPL-ные исходники, а затем бороться с конфликтом
+зависимостей пакетов. 
+<p>
+Но вот борьба позади, и мы приступаем к разбиению единой таблицы
+на несколько связанных и нормализованных, что, собственно,
+и дает право называться СУБД реляционной. Из таблицы old
+с теми же полями, что и в исходном файле, мы сделаем
+3 таблицы, связанные, как это обычно рисуется на схемах,
+таким образом:
+<blockquote><pre>
+
+    phone               
+    ------           
+    phonum              building
+    naim                --------             street
+    bd_id &gt;------------ bd_id                ------
+    other               st_id   &gt;----------- st_id
+                        bldng                nick
+</pre></blockquote>
+<p>
+Значок &gt;-- обозначает сторону "много" в отношении
+"один ко многим" и означает, что в одном здании может быть
+много телефонных номеров, а на одной улице много зданий. 
+<p>
+Начать придется с конца, с таблицы street, которая будет
+содержать список улиц, и на которую будет ссылаться
+таблица building, содержащая, в свою очередь, список
+всех телефонизированных зданий в городе.
+<blockquote><pre>
+create table street
+(
+	st_id smallint unsigned not null auto_increment,
+	nick varchar(32) not null,
+	primary key (st_id)
+);
+insert into street ( nick )
+select distinct street
+from old;
+</pre></blockquote>
+<p>
+Заполнение таблицы заняло 12.1 сек. Теперь создадим таблицу building
+<blockquote><pre>
+create table building
+(
+	bd_id smallint unsigned not null auto_increment,
+	st_id smallint unsigned not null references street,
+	bldng varchar(8) not null,
+	tmp varchar(40) not null,     # временно, для соответствия с old
+	primary key (bd_id)
+);
+</pre></blockquote>
+<p>
+и также заполним её
+<blockquote><pre>
+insert into building ( st_id, tmp, bldng )
+select distinct street.st_id,street.nick,old.bldng
+from old,street
+where old.street=street.nick;
+</pre></blockquote>
+<p>
+Таблица заполнялась аж 5 мин. 23 сек., так что было время
+задуматься. Прояснить ситуацию в таких случаях помогает
+особая команда explain, например
+<blockquote><pre>
+explain select distinct street.st_id,street.nick,old.bldng
+from old,street
+where old.street=street.nick;
+</pre></blockquote>
+<p>
+которая выдала следующую подсказку:
+<blockquote><pre>
++--------+------+---------------+------+---------+------+--------+------------+
+| table  | type | possible_keys | key  | key_len | ref  | rows   | Extra      |
++--------+------+---------------+------+---------+------+--------+------------+
+| street | ALL  | NULL          | NULL |    NULL | NULL |    591 |            |
+| old    | ALL  | NULL          | NULL |    NULL | NULL | 122794 | where used |
++--------+------+---------------+------+---------+------+--------+------------+
+</pre></blockquote>
+<p>
+Оказывается, для каждой записи из old происходит поиск в таблице street,
+т.е. просматриваются O(122794*591) строк.
+<p>
+Попробуем проиндексировать эти две таблицы по общему полю
+<blockquote><pre>
+create index street on street (nick);
+create index street on old (street);
+</pre></blockquote>
+<p>
+Тот же самый запрос теперь выглядит изнутри вот так:
+<blockquote><pre>
++--------+------+---------------+------+---------+------+--------+
+| table  | type | possible_keys | key  | key_len | ref  | rows   |
++--------+------+---------------+------+---------+------+--------+
+| street | ALL  | street        | NULL |    NULL | NULL |    591 |
+| old    | ALL  | street        | NULL |    NULL | NULL | 122794 |
++--------+------+---------------+------+---------+------+--------+
+ 
+----------------------------------------------+
+ Extra                                        |
+----------------------------------------------+
+                                              |
+ range checked for each record (index map: 1) |
+----------------------------------------------+
+</pre></blockquote>
+<p>
+и занимает 19.7 секунд. Даже с учетом ~1 мин. на создание индексов,
+выигрыш в скорости заметен. Разобравшись с индексами, можно их удалить
+<blockquote><pre>
+drop index street on street;
+drop index street on old;
+</pre></blockquote>
+<p>
+Создаем теперь новую таблицу phone
+<blockquote><pre>
+create table phone
+(
+	phonum char(6) not null default "000000",
+	naim varchar(48) not null default "",
+	bd_id smallint unsigned not null references building,
+	other varchar(8) not null
+);
+</pre></blockquote>
+<p>
+Для заполнения последней таблицы даже не пробуем делать выборку из
+неиндексированых таблиц, а первым делом создаем индексы, используя
+заранее предусмотренное временное поле, соответствующее названию улицы.
+<blockquote><pre>
+create index building on building (tmp, bldng);
+create index building on old (street, bldng);
+ 
+insert into phone ( phonum, naim, bd_id, other )
+select old.phonum,old.title,building.bd_id,old.other
+from old,building
+where old.street=building.tmp and old.bldng=building.bldng;
+</pre></blockquote>
+<p>
+Индексы создались за 3 и 45 сек., а данные вставились за 19 сек.
+Теперь можно удалить рабочую таблицу и лишние индекс и поле:
+<blockquote><pre>
+drop table old;
+drop index building on building;
+alter table building drop tmp;
+</pre></blockquote>
+<p>
+Подведем некоторые итоги.
+<p>
+Из исходного 8-мегабайтного текстового файла получились
+3 связанные таблицы общим размером ~3.8MB. Простые запросы, например 
+<blockquote><pre>
+select p.phonum,p.naim,s.nick,b.bldng
+from phone p,street s,building b      # короткие синонимы таблиц
+where 
+   p.bd_id=b.bd_id                # таким образом
+   and b.st_id=s.st_id            #       связывают таблицы
+   and p.phonum like "%1234%"     # собственно запрос
+order by p.naim;
+</pre></blockquote>
+<p>
+занимают ~1.6 сек. Это приблизительно совпадает с результатом
+сканера grep на оригинальном текстовом файле при поиске тех же строк,
+и немного превосходит время, демонстрируемое интерпретатором awk.
+<p>
+Но, конечно, MySQL создан не для того, чтобы соревноваться с grep или
+awk. Используя язык SQL, можно создавать БД и манипулировать данными
+любой сложности. В области клиент-серверных приложений MySQL вполне
+способен конкурировать с признанными коммерческими СУБД. Но вся мощь
+MySQL раскрывается в соединении с технологиями Internet, если так
+можно выразиться, в "дважды клиент-серверных" технологиях. Доступ к
+БД выполняется из приложений, запускаемых на web-сервере, результат
+выдается в виде HTML страниц. Затем web-сервер доставляет страницу в
+клиентский браузер.
+<p>
+В таком виде web-сервер Apache и реляционная СУБД MySQL образуют
+необычайно масштабируемую платформу для создания приложений.
+MySQL успешно трудится на самых разных аппаратных платформах, включая
+суперкомпьютеры, и может обслуживать много web-серверов, работающих на
+одном или на разных компьютерах. А можно настроить такой же тандем для
+работы на единственной скромной персоналке.
+<p>
+Как уже упоминалось, для доступа к MySQL можно использовать разные языки
+программирования. Похожий выбор языков программирования предлагает также
+и Apache через дополнительные модули, расширяющие возможности
+сервера. Существуют и успешно развиваются общедоступные открытые проекты
+<a href="http://www.zope.org">Zope</a> и
+<a href="http://www.midgard-project.org">Midgard</a>
+, объединяющие Apache, MySQL и распространенные языки
+программирования в интегрированную среду разработки с единым интерфейсом.
+</td></tr><tr><td colspan=2 align=center>
+<img src=../img/footer.gif border=0 usemap=#gulag alt="Олег Филон, Дм. Федорович, Ал-др Качанов">
+<map name=gulag>
+<area shape="rect" coords="0,10,130,25" href=../articles/articles.html alt="Статьи Олега Филона" title=ophil>
+<area shape="rect" coords="0,25,51,37" href=../articles/articles.html alt="Статьи Олега Филона" title=ophil>
+<area shape="rect" coords="140,25,317,40" href=http://www.stihi.ru/avtor/fedorovich alt="Литературная страница Дм. Федоровича" title=df>
+<area shape="rect" coords="60,40,317,55" href=http://www.stihi.ru/avtor/fedorovich alt="Литературная страница Дм. Федоровича" title=df>
+<area shape="rect" coords="290,5,440,20" href=http://www.webmascon.com alt="дизайн А. Качанова" title=community>
+<area shape="rect" coords="343,20,440,38" href=http://www.webmascon.com alt="дизайн А. Качанова" title=community>
+<area shape="default" href=../articles/articles.html alt="Статьи Олега Филона" title=ophil>
+</map></td></tr>
+</table>
+</body>
+</html>

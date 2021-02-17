@@ -1,0 +1,394 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional">
+<html><head><meta http-equiv="content-type" content="text/html" charset="utf-8">
+<title>Остров пингвинов. Микро хаки</title>
+<meta name="description" lang="ru" content="микро хаки, советы и приемы эффективной работы на shell, awk, textutils, perl, find, xargs, tar">
+<meta name="keywords" lang="en" content="Unix, LUG, Linux maniac, Oleg P. Philon, articles, Gomel, Belarus, ex-USSR, hacker, hacks, Debian, free software, shell, bash, textutils, awk, perl, consultant, expert, microhack, tricks, tips, russian,">
+<meta name="keywords" lang="ru" content="Юникс, Гомель, Беларусь, Линукс маньяк, Олег П. Филон, статьи, хаки, хакеры, эксперт, консультант, администрирование, серверы, сети, помощь">
+<meta name="author" content="Олег П. Филон">
+<meta name="copyright" content="&copy; FDL, Олег П. Филон">
+<link rel="e-mail" href="mailto:ophil44@gmail.com">
+<meta name="date" content="2002-12-22">
+<meta name="version" content="1.1">
+<style type="text/css">
+<!--
+body, p, div, td, th, tr, form, ol, ul, li, input, textarea, select, a
+	{ 	font-family: Verdana,Geneva,Arial,Helvetica,sans-serif;
+		font-size: 11pt;
+    }
+body	{	background: white;
+		margin: 3px;
+    }
+p 	{	display: block;
+		text-align: justify;
+		line-height: 120%;
+		margin: 4px;
+    }	
+b 	{ 	font-weight: bold;
+		color: blue;
+    }
+pre, code, tt { font: "Courier New", Courier, monospace;
+		line-height: 120%;
+		font-size: 11pt;
+    }
+
+a	{	font-family: Verdana,Geneva,Arial,Helvetica,sans-serif;
+		font-size:12pt;
+		text-decoration:underline;
+		color: blue
+    }
+a:hover {	color: red
+    }
+-->
+</style>
+<script type="text/javascript" language=JavaScript>
+<!--
+newbie = new Image();
+newbie.src="../img/newbie.gif";
+guru = new Image();
+guru.src="../img/guru.gif";
+comm = new Image();
+comm.src="../img/forum.gif";
+about = new Image();
+about.src="../img/about.gif";
+-->
+</script>
+
+</head><body>
+<table cellpadding=0 cellspacing=3 border=0 summary="макет страницы">
+<tr valign=top><td><a href=../index.html><img src="../img/topbox.gif" alt="Остров пингвинов"></a></td>
+<td height=60 bgcolor="#FFCC33"></td></tr>
+<tr><td colspan=2><img src="../img/blue-line.gif" width=600 height=5
+alt="- - - - - - - - - - - - - - - - - - - - - - -">
+<tr valign=top><td width=131>
+<img name="corner" src="../img/articles.gif" width=125 height=91 alt="Сольные выступления"><br><br>
+<a href="../articles/newbie.html" onmouseover="document.corner.src='../img/newbie.gif';return true" onmouseout="document.corner.src='../img/articles.gif';return true">Для начинающих</a><br><br>
+<a href="../articles/guru.html" onmouseover="document.corner.src='../img/guru.gif';return true" onmouseout="document.corner.src='../img/articles.gif';return true">Для знатоков</a><br><br>
+<a href="../articles/community.html" onmouseover="document.corner.src='../img/forum.gif';return true" onmouseout="document.corner.src='../img/articles.gif';return true">Для души</a><br><br>
+<a href="../articles/about.html" onmouseover="document.corner.src='../img/about.gif';return true" onmouseout="document.corner.src='../img/articles.gif';return true">О нас</a>
+</td><td>
+
+<strong>Микро хаки</strong>
+<p align=right>
+<em>Copyright(С) Олег П. Филон,<br>
+январь 2001,Гомель,BY<br>
+<a href="mailto:ophil44@gmail.com">ophil44@gmail.com</a>
+</em>
+<p>
+За много лет общения с разными компьютерами и программами у меня
+накопились всякие мелкие приемы и фокусы, помогающие мне в повседневной
+работе. Предлагаю их и вам, вдруг когда-нибудь пригодятся.
+<p>
+Очень давно, ещё трудясь в большом коллективе на советской
+многопроцессорной суперЭВМ "<em>Эльбрус</em>", мы уже были хорошо знакомы с
+зависанием машины. После ее жёсткого рестарта начиналось своеобразное
+соревнование - кто первым залогинится и запустит на трансляцию свою
+программу.  Это называлось "выиграть вбрасывание". Часто выигрывать
+вбрасывание мне помогал нехитрый приём - я называл файлы простыми
+быстро набираемыми на клавиатуре именами.  В современных командных
+процессорах есть полезная команда, позволяющая использовать этот приём
+по максимуму. Любую часто используемую команду можно обозвать коротким
+псевдонимом - <em>alias'ом</em>.  Вот некоторые <em>alias'ы</em>, живущие у меня в bash:
+<blockquote><pre>
+alias ds='dirs'
+alias l='less'
+alias ll='/bin/ls -lF --color'
+alias ls='ls --color=auto '
+alias m='more'
+alias mu='mutt -y'
+alias pp='pushd'
+alias ss='ps aux'
+alias xx='startx -- -bpp 16'
+</pre></blockquote>
+<p>
+Здесь можно заметить ещё один простой приём. Ваш командный процессор
+хранит стек каталогов, с которым можно работать с помощью трёх команд:
+pushd, popd и dirs. Если завести у себя файл .dirs_stack приблизительно
+вот такого вида:
+<blockquote><pre>
+for sd in /usr/doc/HOWTO ~ftp/pub /usr/src/linux /usr/local/src
+do if [ -d $sd ] ; then pushd $sd
+   fi
+done &gt; /dev/null
+pushd -0 &gt; /dev/null
+</pre></blockquote>
+<p>
+а затем при старте, например, из файла .bashrc его вызывать
+<blockquote><pre>
+if [ -f ~/.dirs_stack ]; then
+    source ~/.dirs_stack
+fi
+</pre></blockquote>
+    
+, то перемещаться между несколькими любимыми каталогами не составит
+особого труда. Например, если команда ds выдает
+<blockquote><pre>
+~ ~ftp/pub /usr/src/linux /usr/local/src /usr/doc/HOWTO 
+</pre></blockquote>
+<p>
+, то попасть в каталог HOWTO можно, нажав на клавиши всего 6 раз:
+<blockquote><pre>
+...$ pp -0
+</pre></blockquote>
+<p>
+Посмотреть, как себя чувствует, к примеру, web-сервер apache,
+проще всего вот так:
+<blockquote><pre>
+...$ ss|grep [a]pache
+</pre></blockquote>
+<p>
+А используете ли вы bash, если надо слегка поправить один
+список и получить другой? Например, найдём юзеров, имеющих
+в качестве shell этот самый bash, и сделаем соответствующий
+отчет:
+<blockquote><pre>
+...$ LIST=$(grep /bin/bash /etc/passwd|cut -d: -f1)
+...$ LIST=$(echo $LIST|sed 's/ /,/g')
+...$ LIST=$(eval echo 'юзер\ \"'{$LIST}'\"\ пользуется\ bash\\n')
+...$ echo -en ' '$LIST
+</pre></blockquote>
+<p>
+Этот пример, пожалуй, не очень удачный для генерации списка.
+Раз уж мы задействовали sed, надо было ему и весь отчёт поручить.
+По поводу раскрытия фигурных скобок возможности bash лучше
+проиллюстрирует вот такое упражнение с русским языком:
+<blockquote><pre>
+...$ echo {в,от,на,про,\ }{реж,пол,вод}{\ ,ит,ка}|fmt
+</pre></blockquote>
+<p>
+В последних версиях bash появилась возможность использовать прямо
+в командах регулярные выражения. Часто возникает необходимость
+выделить из полного имени отдельно имя каталога и имя файла. Для
+этого исторически были предназначены отдельные команды
+/usr/bin/{basename,dirname}. Например:
+<blockquote><pre>
+...$ PROBA=$(pwd)/micro-hacks
+...$ echo $PROBA
+/home/ophil/articles/micro-hacks
+...$ basename $PROBA
+micro-hacks
+...$ dirname $PROBA
+/home/ophil/articles
+</pre></blockquote>
+<p>
+А вот как почти то же самое можно теперь делать прямо в bash'е:
+<blockquote><pre>
+...$ NAME=${PROBA##*/}
+...$ DIR=${PROBA%$NAME}
+...$ echo $DIR $NAME
+/home/ophil/articles/ micro-hacks
+</pre></blockquote>
+<p>
+Знаете ли вы, что в bash'е, как в настоящем языке программирования,
+есть переменные целого типа и арифметические операции над ними?
+Если объявить переменную целой, с ней можно выполнять элементарные
+арифметический действия:
+<blockquote><pre>
+...$ declare -i n=10
+...$ n=n+20
+...$ echo $n
+30
+...$ n=n/3-2
+...$ echo $n
+8
+</pre></blockquote>
+<p>
+Если вам вдруг понадобится арифметика с большой точностью, из bash'а
+легко получить доступ ещё к одной жемчужине из классического наследия
+UNIX - калькулятору bc. Допустим, мы захотели проверить, действительно ли,
+как шутили когда-то на физтехе, "Ежды Пи = Пижды Е" хотя бы с
+точностью 400 знаков:
+<blockquote><pre>
+...$ PI=$(echo 'scale=400;4*a(1)'|bc -l)
+...$ PI=$(echo $PI|sed 's/\\ //g')
+...$ E=$(echo 'scale=400;e(1)'|bc -l)
+...$ E=$(echo $E|sed 's/\\ //g')
+...$ echo $PI*$E|bc
+</pre></blockquote>
+<p>
+Bash проявляет свою неисчерпаемую мощь, конечно, не сам по себе, а в
+качестве соединительной ткани между многочисленными мелкими програмками,
+утилитами, фильтрами, возникшими и отточеными в процессе эволюции
+вычислительной техники и программирования.  Вот маленькая программка с
+использованием языка AWK
+<blockquote><pre>
+#! /bin/sh
+usage="\n
+       Usage: $0 имя_каталога\n
+       показывает список файлов,имеющих одинаковую длину\n\a 
+"
+if [ $# != 1 ] 
+then echo -e $usage ; exit 0
+fi
+ 
+ls -lS $1|awk '
+size==$5 { list[$9]=$0      # совпал размер - сохраним в массиве 
+	   split(line,a)    # вернёмся к предыдущей строке
+	   list[a[9]]=line  # обе строки в массиве
+	 }
+	 { size=$5	    # для каждой строки
+	   line=$0
+	 }
+END	 { for (i in list)
+		print list[i]
+	 }'|sort -k5n
+</pre></blockquote>
+<p>
+Здесь bash соединяет воедино простейшую подсказку, показ содержимого
+каталога, вызов интерпретатора awk и текст программки для него,
+включая печать файлов с подозрительно одинаковой длиной - кандидатов
+на замену файла жесткой ссылкой, и в самом конце сортирует список
+файлов по размеру.
+<p>
+Еще один пример использования языка AWK можно посмотреть в <a href="phone-db.html">отдельной заметке</a>, рассказывающей о генерации случайного
+телефонного справочника любого размера из подручных средств: произвольного
+текстового файла, утилиты tr и интерпретатора awk.
+<p>
+&lt;DEPRECATED&gt; Я обнаружил, что упражняясь с perl,
+также иногда удобно оборачивать вокруг программы на perl скрипт bash,
+чтобы иметь в одном файле и текст программки, и обрабатываемые данные:
+<blockquote><pre>
+#! /bin/bash
+perl -we '
+use strict;
+use Data::Dumper;
+my(@new);
+while(&lt;&gt;){
+chomp;
+@new=();
+push(@new, $+) while m{
+    "([^\"\\]*(?:\\.[^\"\\]*)*)",?  # groups the phrase in quotes
+    | ([^,]+),?
+    | ,}gx;                   # пример из perlfaq4 by Jeffrey Friedl
+push(@new, undef) if substr($_,-1,1) eq ",";
+print "ophil debug:\n",Dumper(\@new);
+}'&lt;&lt;\EOT
+SAR001,"","Ci,$$","\"Bob@Smith\"","%am",N,8,1,0,7,"Core&amp;&amp;Dumped"
+Я12340,,"НЕЧТО-О-О-О","Абвгд'ей Прстуф","проба",Ъ,1,0777,3,4,"да"
+EOT
+</pre></blockquote>
+<p>
+&lt;/DEPRECATED&gt;
+<p>
+Предыдущий пример пришлось отменить. Несмотря на то, что он вполне
+работает, но называться хаком он права не имеет. По хакерской традиции,
+если есть более изящное или эффективное решение, то хаком является именно
+оно. Конечно, в perl'е в самом есть конструкции, позволяющие получить
+ввод прямо из файла.  Вот более правильный вариант, не использующий
+лишний вызов программы и не привязанный к командному процессору:
+<blockquote><pre>
+#! /usr/bin/perl -w
+use strict;
+use Data::Dumper;
+my(@new);
+while(&lt;DATA&gt;){
+chomp;
+@new=();
+push(@new, $+) while m{
+    "([^\"\\]*(?:\\.[^\"\\]*)*)",?  # groups the phrase in quotes
+    | ([^,]+),?
+    | ,}gx;                   # пример из perlfaq4 by Jeffrey Friedl
+push(@new, undef) if substr($_,-1,1) eq ",";
+print "ophil debug: ",Dumper(\@new);
+}
+__DATA__
+SAR001,"","Ci,$$","\"Bob@Smith\"","%am",N,8,1,0,7,"Core&amp;&amp;Dumped"
+Я12340,,"НЕЧТО-О-О-О","Абвгд'ей Прстуф","проба",Ъ,1,0777,3,4,"да"
+</pre></blockquote>
+<p>
+Рассмотрим возникающую время от времени реальную задачу - переименовать или
+подредактировать большое количество файлов, например, пришедших из другой
+системы. Здесь оказываются очень удобны пара утилит find и xargs. Если
+ещё под рукой имеются интерпретатор perl, pcregrep, понимающий перловые
+регулярные выражения, и миниатюра rename, написанная самим Ларри Уолом,
+то количество файлов перестает играть какую-либо роль, единственная
+сложность - правильно регулярно выражаться.
+<p>
+Для начала займёмся самими именами файлов - например, заменим в имени
+файла пробелы на знак подчеркивания "_":
+<blockquote><pre>
+...$ find -name '* *' -print0|xargs -r0 rename 's/ /_/g'
+</pre></blockquote>
+<p>
+Если пробел встречается в имени каталога, повторите эту команду несколько
+раз. Если глубина вложения каталогов большая, а вы принципиально против 
+рутинной работы, оберните нужную команду циклом:
+<blockquote><pre>
+...$ for i in $(seq 1 20);do нужные команды;done
+</pre></blockquote>
+<p>
+Теперь попробуем выполнить какое-нибудь несложное редактирование.
+Для примера, будем искать фразу 'http://что-угодно/буквыцифры.htm"'
+и заменим ее на 'http://что-угодно/буквы-00-цифры.html"' во всех
+файлах типа *.html, содержащих указанный контекст.  Регулярные выражения,
+в отличие от нецензурных, нужно старательно обдумывать, а иногда не грех
+их и поотлаживать.  Например, перед собственно редактированием полезно
+посмотреть, что же наши конструкции на самом деле нашли
+<blockquote><pre>
+...$ find -type f -a -name \*\.html|
+&gt; xargs perl -wne 'print "$1 $2 $3\n"
+&gt; if m#(http://(?:[^/]+/)+)([a-zA-Z-_]+)(\d+)\.htm"#'
+</pre></blockquote>
+<p>
+Если мы нашли действительно то, что искали, поправим все файлы
+с заданным контекстом, не трогая остальные:
+<blockquote><pre>
+...$ find -type f -a -name \*\.html|
+&gt; xargs pcregrep -l 'http://([^/]+/)+[a-zA-Z-_]+\d+\.htm"'|
+&gt; xargs perl -i.bak -wpe '
+&gt; s#(http://(?:[^/]+/)+)([a-zA-Z-_]+)(\d+)\.htm"
+&gt; #$1$2-00-$3.html"#g'
+</pre></blockquote>
+<p>
+Убедившись, что все в порядке, удаляем старые файлы:
+<blockquote><pre>
+...$ find -name \*\.bak|xargs rm
+</pre></blockquote>
+<p>
+В заключение ещё один фокус - как перенести установленный Линукс
+из одного раздела в другой или на новый диск.  Допустим, мы успешно
+загрузили старую систему, создали на новом диске разделы и файловую
+систему, смонтировали новый раздел и перешли в него.  Как и положено,
+пока он содержит только каталог lost+found. Делаем:
+<blockquote><pre>
+...# tar cp -С / bin boot dev etc lib root sbin usr var|tar xvp
+...# mkdir proc mnt tmp;chmod 1777 tmp
+</pre></blockquote>
+<p>
+Теперь нужно поправить файлы, привязанные к текущему разделу.  Иногда
+достаточно поправить только etc/fstab.  Но лучше внимательно проверить
+весь etc на предмет имен хостов, адресов, создать заранее swap раздел. Не
+стоит также оставлять старые журнальные файлы в var/log/. Архивы или
+каталог /home можно копировать избирательно. Например:
+<blockquote><pre>
+...# mkdir home;cd home
+...# tar cp -C /home ftp/pub/doc ophil proba|tar xvp
+</pre></blockquote>
+<p>
+Перед моментом истины - подключением нового диска и загрузки с него,
+имеет смысл создать аварийную дискету. Если новый корневой раздел будет,
+к примеру, /dev/hda3, приготовьте дискету и подходящее ядро.  После этого
+можно копировать образ ядра:
+<blockquote><pre>
+...$ /usr/sbin/rdev vmlinuz-2.4.0 /dev/hda3
+...$ dd&lt;vmlinuz-2.4.0&gt;/dev/fd0
+</pre></blockquote>
+<p>
+Настоящим кладезем подобных полезных приемов и программ является
+книга издательства O'Reilly 
+<a href="http://www.oreilly.com/catalog/upt2">Unix power tools, 2nd ed.</a>
+, авторы Jerry Peek, Tim O'Reilly, Mike Loukides.
+Эта книга переведена на русский и выпущена издательством BHV.
+</td></tr><tr><td colspan=2 align=center>
+<img src=../img/footer.gif border=0 usemap=#gulag alt="Олег Филон, Дм. Федорович, Ал-др Качанов">
+<map name=gulag>
+<area shape="rect" coords="0,10,130,25" href=../articles/articles.html alt="Статьи Олега Филона" title=ophil>
+<area shape="rect" coords="0,25,51,37" href=../articles/articles.html alt="Статьи Олега Филона" title=ophil>
+<area shape="rect" coords="140,25,317,40" href=http://www.stihi.ru/avtor/fedorovich alt="Литературная страница Дм. Федоровича" title=df>
+<area shape="rect" coords="60,40,317,55" href=http://www.stihi.ru/avtor/fedorovich alt="Литературная страница Дм. Федоровича" title=df>
+<area shape="rect" coords="290,5,440,20" href=http://www.webmascon.com alt="дизайн А. Качанова" title=community>
+<area shape="rect" coords="343,20,440,38" href=http://www.webmascon.com alt="дизайн А. Качанова" title=community>
+<area shape="default" href=../articles/articles.html alt="Статьи Олега Филона" title=ophil>
+</map></td></tr>
+</table>
+</body>
+</html>

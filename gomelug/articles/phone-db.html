@@ -1,0 +1,200 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional">
+<html><head><meta http-equiv="content-type" content="text/html" charset="utf-8">
+<title>Генерация случайного телефонного справочника</title>
+<meta name="description" lang="ru" content="Генерация случайного телефонного справочника на языке AWK для использования в MySQL. Микрохаки Олега П. Филона, группа пользователей Линукс, Гомель, Беларусь">
+<meta name="keywords" lang="en" content="Linux, Unix, LUG, Oleg P. Philon, articles, Gomel, Belarus, ex-USSR, hacker, hacks, Debian, free software, shell, bash, textutils, awk, perl, mysql, sql, consultant, expert, microhack, tricks, tips, russian, education, example">
+<meta name="keywords" lang="ru" content="Линукс, Юникс, Гомель, Беларусь, пользователи Линукс, Олег П. Филон, статьи, хаки, хакеры, эксперт, консультант, администрирование, серверы, сети, помощь, обучение, пример, микрохаки">
+<meta name="author" content="Олег П. Филон">
+<meta name="copyright" content="&copy; FDL, Олег П. Филон">
+<link rel="e-mail" href="mailto:ophil44@gmail.com">
+<meta name="date" content="2002-12-22">
+<meta name="version" content="1.1">
+<style type="text/css">
+<!--
+body, p, div, td, th, tr, form, ol, ul, li, input, textarea, select, a
+	{ 	font-family: Verdana,Geneva,Arial,Helvetica,sans-serif;
+		font-size: 11pt;
+    }
+body	{	background: white;
+		margin: 3px;
+    }
+p 	{	display: block;
+		text-align: justify;
+		line-height: 120%;
+		margin: 4px;
+    }	
+b 	{ 	font-weight: bold;
+		color: blue;
+    }
+pre, code, tt { font: "Courier New", Courier, monospace;
+		line-height: 120%;
+		font-size: 11pt;
+    }
+
+a	{	font-family: Verdana,Geneva,Arial,Helvetica,sans-serif;
+		font-size:12pt;
+		text-decoration:underline;
+		color: blue
+    }
+a:hover {	color: red
+    }
+-->
+</style>
+<script type="text/javascript" language=JavaScript>
+<!--
+newbie = new Image();
+newbie.src="../img/newbie.gif";
+guru = new Image();
+guru.src="../img/guru.gif";
+comm = new Image();
+comm.src="../img/forum.gif";
+about = new Image();
+about.src="../img/about.gif";
+-->
+</script>
+
+</head><body>
+<table cellpadding=0 cellspacing=3 border=0 summary="макет страницы">
+<tr valign=top><td><a href=../index.html><img src="../img/topbox.gif" alt="Остров пингвинов"></a></td>
+<td height=60 bgcolor="#FFCC33"></td></tr>
+<tr><td colspan=2><img src="../img/blue-line.gif" width=600 height=5
+alt="- - - - - - - - - - - - - - - - - - - - - - -">
+<tr valign=top><td width=131>
+<img name="corner" src="../img/articles.gif" width=125 height=91 alt="Сольные выступления"><br><br>
+<a href="../articles/newbie.html" onmouseover="document.corner.src='../img/newbie.gif';return true" onmouseout="document.corner.src='../img/articles.gif';return true">Для начинающих</a><br><br>
+<a href="../articles/guru.html" onmouseover="document.corner.src='../img/guru.gif';return true" onmouseout="document.corner.src='../img/articles.gif';return true">Для знатоков</a><br><br>
+<a href="../articles/community.html" onmouseover="document.corner.src='../img/forum.gif';return true" onmouseout="document.corner.src='../img/articles.gif';return true">Для души</a><br><br>
+<a href="../articles/about.html" onmouseover="document.corner.src='../img/about.gif';return true" onmouseout="document.corner.src='../img/articles.gif';return true">О нас</a>
+См. также
+<br><br>
+<a href="lab-rab-mysql.html">Лабораторная работа по реляционным СУБД и языку SQL</a>
+<br><br>
+<a href="micro-hacks.html">Микро хаки: советы и приемы эффективной работы</a>
+<br><br>
+<a href="sketch_o_heroes.html">Этюд о героях невидимого фронта</a>
+</td><td>
+
+<strong>Генерация случайного телефонного справочника
+</strong>
+<p align=right><i>Copyright(С) Олег П. Филон<br>
+январь 2001, Гомель, BY<br>
+<a href="mailto:ophil44@gmail.com">ophil44@gmail.com</a></i><br>
+<p>
+Возьмем любой текстовый файл, содержащий много русских слов. Далее
+мы будем из них случайным образом выбирать отдельные слова
+для якобы фамилий и названий улиц, поэтому в первую очередь
+преобразуем этот файл в список слов:
+<blockquote><pre>
+...$ tr -d '!-~'&lt;russian.text|tr ' ' '\n'|tr -s '\n'&gt;russian.words
+</pre></blockquote>
+<p>
+У программы tr, как у всех textutils, есть хорошая документация
+в виде info-файла, доступная через 
+<blockquote><pre>
+...$ info -f textutils
+</pre></blockquote>
+<p>
+На всякий случай поясню, что первый вызов tr удаляет из текста
+почти все символы, кроме русских букв и пробелов. Второй вызов tr
+преобразует все пробелы в символы новой строки, а третий tr
+удаляет пустые строки.
+<p>
+Для единообразия добавим еще одну трансформацию:
+<blockquote><pre>
+...$ tr Ю-Ъ ю-ъ&lt;russian.words&gt;words
+</pre></blockquote>
+<p>
+Эта трансляция символов преобразует прописные буквы в строчные.
+Такие странные диапазоны символов нужны из-за используемой
+в Интернете и в Юниксе кодировки КОИ-8, в которой буквы расположены
+вот в таком порядке:
+<blockquote><pre>
+юабцдефгхийклмнопярстужвьызшэщчъЮАБЦДЕФГХИЙКЛМНОПЯРСТУЖВЬЫЗШЭЩЧЪ
+</pre></blockquote>
+<p>
+Если у вас проблемы с ятями Ъ и ъ, для большинства текстов вполне хватит
+диапазонов 'Ю-Ч' и 'ю-ч'. Конечно, я не помню кодировку КОИ-8 наизусть,
+и не набивал эту строку вручную, а воспользовался вездесущим perl'ом:
+<blockquote><pre>
+...$ perl -e 'use locale;print grep/\w/,map{chr()}128..255'
+</pre></blockquote>
+<p>
+Возможно, это поможет вам разобраться с вашей кодировкой и справиться
+с различием регистра букв в вашей системе.
+<p>
+Теперь мы хотим создать подобие телефонного справочника вот с такими
+пятью полями: 
+<blockquote><pre>
+
+	1. номер телефона
+	2. фамилия и.о.
+	3. улица
+	4. номер дома
+	5. номер квартиры
+</pre></blockquote>
+<p>
+и разделенными знаками табуляции. Для меня ближайшей программой,
+подходящей для этой задачи, является интерпретатор awk. Вот что у меня
+получилось - текст программы на языке AWK:
+<blockquote><pre>
+BEGIN {       # этот блок выполняется 1 раз при запуске скрипта
+    while((getline word&lt;"words")&gt;0)
+	{   i++               #  индекс
+	    words[i]=word     #  массив слов
+	}
+    srand()   # инициализация датчика случайных чисел
+    u=1000    # максимальное количество улиц в нашем справочнике
+    b=100     #         -- "" --      зданий на улице
+    k=200     #         -- ""  --     квартир в здании
+}
+{             #  эти операторы выполняются для каждой строки
+    n=int(i*rand())            # индекс превратился в размер массива
+    m=int(i*rand())            # n и m - случайные числа
+			       #                в заданном диапазоне
+    s=int(1+i*int(u*rand())/u) # s - случайное,не более u разных
+    print $1 "\t"\
+	  words[n],\
+	  substr(words[m],1,1)"."substr(words[m],2,1)".\t"\
+	  words[s] "\t"\
+          int(b*rand()+1) "\t"\
+          int(k*rand()+1)
+}
+</pre></blockquote>
+<p>
+AWK необычный язык. Но стоит понять метафору, скрытую в нем, и программы
+станут вполне читабельными. AWK берет строки из стандартного ввода,
+разбивает их на слова, а дальше смотрит, нужно ли применять к строке
+или отдельным словам указанные операторы. Много лет назад без лишнего
+шума AWK стал работать со словами и со строками как с объектами, просто
+указывая контекст и выполняемые в нем операции.
+<p>
+В нашем случае при старте подготовленный заранее список слов запоминается
+в массиве, а далее все строки обрабатываются одинаково. В языке AWK
+все массивы ассоциативные, то, что в Perl стало впоследствии хеш-массивом,
+но, как видите, с таким массивом можно обращаться как с обычным, индексируемым
+целым числом.
+<p>
+Остался последний штрих. Пусть файл с программой на AWK
+называется "create-phones-db.awk". Подадим ему на
+вход список якобы телефонных номеров и сохраним результат
+в файле "phones.txt"
+<blockquote><pre>
+...$ seq 100000 200000|awk -f create-phones-db.awk&gt;phones.txt
+</pre></blockquote>
+<p>
+Готово. Размер файла регулируйте по вкусу, и не забудьте
+удалить лишние файлы.
+</td></tr><tr><td colspan=2 align=center>
+<img src=../img/footer.gif border=0 usemap=#gulag alt="Олег Филон, Дм. Федорович, Ал-др Качанов">
+<map name=gulag>
+<area shape="rect" coords="0,10,130,25" href=../articles/articles.html alt="Статьи Олега Филона" title=ophil>
+<area shape="rect" coords="0,25,51,37" href=../articles/articles.html alt="Статьи Олега Филона" title=ophil>
+<area shape="rect" coords="140,25,317,40" href=http://www.stihi.ru/avtor/fedorovich alt="Литературная страница Дм. Федоровича" title=df>
+<area shape="rect" coords="60,40,317,55" href=http://www.stihi.ru/avtor/fedorovich alt="Литературная страница Дм. Федоровича" title=df>
+<area shape="rect" coords="290,5,440,20" href=http://www.webmascon.com alt="дизайн А. Качанова" title=community>
+<area shape="rect" coords="343,20,440,38" href=http://www.webmascon.com alt="дизайн А. Качанова" title=community>
+<area shape="default" href=../articles/articles.html alt="Статьи Олега Филона" title=ophil>
+</map></td></tr>
+</table>
+</body>
+</html>

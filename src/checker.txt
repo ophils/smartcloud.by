@@ -1,0 +1,28 @@
+Title: проба JS # 36 - форма с проверкой данных
+Description-ru: Комбинация html-кода и текста
+Keywords-en: form, javascript, validate
+Keywords-ru: форма, заполнение, скрипт, проверка, данные, корректность
+Author: Олег П. Филон
+Copyright: FDL, Олег П. Филон
+E-mail: ophil@cm.gomel.by
+Date: 2014-10-02
+Version: 1.0
+Style-file: www/philon.css
+Script-file: www/checker.js
+Ext-table: www/table.inc
+Footer: www/footer.inc
+
+_head2(Пжлст, введите ваши данные)
+<form name="form-check" onsubmit="return t(this)" method=get action=form-proba.php>
+_start_table(border=1 cellpadding=2 cellspacing=0 summary="input form 7 fields")
+<colgroup align="center"><col width="20%"><col><colgroup>
+_table_row(имя:, <input type=text name=proba[naim] value="ваше имя">)
+_table_row(пароль:, <input type=password name=proba[password]>)
+_table_row(ещё раз<br>для проверки:, <input type=password name=password1>)
+_table_row(любимое число:, <input type=text name=proba[num] value="">)
+_table_row(e-mail:, <input type=text name=proba[mail] value="e-mail">)
+_table_row(дата в формате<br>гггг-мм-чч :,<input type=text name=proba[date] value="">)
+_table_row(web-сайт:, <input type=text name=proba[site] value="http://">)
+_table_row(<input type=submit value="послать">, <input type=reset value="очистить">)
+_end_table
+</form>

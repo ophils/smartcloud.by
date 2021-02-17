@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional">
+<html><head><meta http-equiv="content-type" content="text/html" charset="utf-8">
+<title>Остров пингвинов. Для начинающих</title>
+<meta name="description" lang="ru" content="Для новичков - от знатоков из группы пользователей Линукс, Гомель, Беларусь">
+<meta name="keywords" lang="en" content="Linux, Unix, LUG, Gomel, Belarus, ex-USSR, hacker, hacks, Debian, free software, shell, bash, textutils, awk, perl, consultant, expert, microhack, tricks, tips, russian">
+<meta name="keywords" lang="ru" content="Линукс, Юникс, Гомель, Беларусь, пользователи Линукс, хаки, хакеры, эксперт, консультант, администрирование, интернет-технологии, серверы, сети, помощь, Олег П. Филон, статьи">
+<meta name="author" content="Олег П. Филон">
+<meta name="copyright" content="&copy; FDL, Олег П. Филон">
+<link rel="e-mail" href="mailto:ophil44@gmail.com">
+<meta name="date" content="2002-12-22">
+<meta name="version" content="1.1">
+<style type="text/css">
+<!--
+body, p, div, td, th, tr, form, ol, ul, li, input, textarea, select, a
+	{ 	font-family: Verdana,Geneva,Arial,Helvetica,sans-serif;
+		font-size: 11pt;
+    }
+body	{	background: white;
+		margin: 3px;
+    }
+p 	{	display: block;
+		text-align: justify;
+		line-height: 120%;
+		margin: 4px;
+    }	
+b 	{ 	font-weight: bold;
+		color: blue;
+    }
+pre, code, tt { font: "Courier New", Courier, monospace;
+		line-height: 120%;
+		font-size: 11pt;
+    }
+
+a	{	font-family: Verdana,Geneva,Arial,Helvetica,sans-serif;
+		font-size:12pt;
+		text-decoration:underline;
+		color: blue
+    }
+a:hover {	color: red
+    }
+-->
+</style>
+<script type="text/javascript" language=JavaScript>
+<!--
+newbie = new Image();
+newbie.src="../img/newbie.gif";
+guru = new Image();
+guru.src="../img/guru.gif";
+comm = new Image();
+comm.src="../img/forum.gif";
+about = new Image();
+about.src="../img/about.gif";
+-->
+</script>
+
+</head><body>
+<table cellpadding=0 cellspacing=3 border=0 summary="макет страницы">
+<tr valign=top><td><a href=../index.html><img src="../img/topbox.gif" alt="Остров пингвинов"></a></td>
+<td height=60 bgcolor="#FFCC33"></td></tr>
+<tr><td colspan=2><img src="../img/blue-line.gif" width=600 height=5
+alt="- - - - - - - - - - - - - - - - - - - - - - -">
+<tr valign=top><td width=131>
+<img name="corner" src="../img/articles.gif" width=125 height=91 alt="Растим смену"><br><br>
+<b>Для начинающих</b><br><br>
+<a href="../articles/guru.html" onmouseover="document.corner.src='../img/guru.gif';return true" onmouseout="document.corner.src='../img/newbie.gif';return true">Для знатоков</a><br><br>
+<a href="../articles/community.html" onmouseover="document.corner.src='../img/forum.gif';return true" onmouseout="document.corner.src='../img/newbie.gif';return true">Для души</a><br><br>
+<a href="../articles/about.html" onmouseover="document.corner.src='../img/about.gif';return true" onmouseout="document.corner.src='../img/newbie.gif';return true">О нас</a>
+</td><td>
+
+<p>
+<strong>Добро пожаловать!</strong>
+<p>
+<a href="../articles/stories.html">Компьютерные истории</a> были написаны для
+Гомельской вечерней газеты "Сто процентов", в рубрику "Интернет-кафе".
+<p>
+Если вы хотите не спеша оглянуться в недалекое прошлое и
+немного повспоминать, приглашаем почитать обзорную заметку
+<a href="../articles/why-linux.html">Почему Линукс?</a>  Если же вам больше по
+вкусу лихо закрученый сюжет, супербоевик в области высоких технологий,
+переходите сразу на <a href="../articles/why-linux.html#8">истоки движения за
+свободное ПО</a> и последовавшее за ним <a href="../articles/why-linux.html#11">восстание хакеров</a>.
+<p>
+Предлагаем также посмотреть <a href="../articles/konspect.html">конспект лекций</a> для начинающих осваивать многопользовательскую
+систему Юникс. Изложение, пока это возможно, не привязано к конретному
+варианту Юникс. При обсуждении дистрибутивов более подробно рассмотрен
+Дебьян. Об этом проекте рассказано также в <a href="../articles/debian.html">отдельной статье</a>. В докладе <a href="../articles/anarchy.html">"Конституционная
+анархия Debian"</a>, помещённом на нашем сайте с разрешения авторов,
+Пети Новодворского и Вартана Хачатурова, вы можете узнать об их опыте
+в разработке и развитии проекта Дебьян.
+<p>
+Минимум усилий и быстрый результат - это своеобразная программистская
+поэзия.  В <a href="../articles/sketch_o_heroes.html">этюде о героях
+невидимого фронта</a> вы узнаете, как с помощью программы размером в пару
+строк извлечь из недр интернета список известнейших хакеров. Вынужден
+сразу предупредить, что настоящие хакеры не имеют никакого отношения
+к компьютерным взломам и воровству, а также обычно не опускаются до
+мелкого хулиганства. Так что этот список можно довольно точно назвать
+списком бескорыстных труженников, или рейтингом ученых-идеалистов от
+программирования.
+</td></tr><tr><td colspan=2 align=center>
+<img src=../img/footer.gif border=0 usemap=#gulag alt="Олег Филон, Дм. Федорович, Ал-др Качанов">
+<map name=gulag>
+<area shape="rect" coords="0,10,130,25" href=../articles/articles.html alt="Статьи Олега Филона" title=ophil>
+<area shape="rect" coords="0,25,51,37" href=../articles/articles.html alt="Статьи Олега Филона" title=ophil>
+<area shape="rect" coords="140,25,317,40" href=http://www.stihi.ru/avtor/fedorovich alt="Литературная страница Дм. Федоровича" title=df>
+<area shape="rect" coords="60,40,317,55" href=http://www.stihi.ru/avtor/fedorovich alt="Литературная страница Дм. Федоровича" title=df>
+<area shape="rect" coords="290,5,440,20" href=http://www.webmascon.com alt="дизайн А. Качанова" title=community>
+<area shape="rect" coords="343,20,440,38" href=http://www.webmascon.com alt="дизайн А. Качанова" title=community>
+<area shape="default" href=../articles/articles.html alt="Статьи Олега Филона" title=ophil>
+</map></td></tr>
+</table>
+</body>
+</html>

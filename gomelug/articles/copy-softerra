@@ -1,0 +1,53 @@
+#! /bin/sh
+site=http://www.softerra.ru
+cp1251='þàáöäåôãõèéêëìíîïÿðñòóæâüûçøýù÷úÞÀÁÖÄÅÔÃÕÈÉÊËÌÍÎÏßÐÑÒÓÆÂÜÛÇØÝÙ×Ú¸«»–'
+koi8r='À-ßà-ÿ£""-'
+# function - getin path-to-file
+getin () {
+	snarf -p $site/$1 -|
+	sed 's/><br></><br>\
+</g'|	tr $cp1251 $koi8r > page$n.html
+	n=$(($n+1))
+}
+# function - update directory-at-site num-pages
+update () {
+n=1	# page counter
+getin $1/index.html
+for j in $(seq 2 $2)
+do  getin $1/index.html?page=$j
+done
+list=$(perl -wne '
+print "$1\n" if m#href="/'$1'/(\d{4,5})/"#
+' page[0-9]*.html|sort|uniq)
+rm -f page[0-9]*.html
+# page list make and get
+for i in $list
+do	test -s nn/$i.html || {
+	snarf -p $site/$1/$i/print.html -|
+	sed 's/><!--/>\
+<!--/g;s/--></-->\
+</g;s#href="/#href="#g;s#src="http://img.softerra.ru/#src="#g'|
+sed '/^<!--ctsearch_noindex-->$/,/^<!--\/ctsearch_noindex-->$/d'|
+	tr $cp1251 $koi8r > $i.html
+	}
+done
+# get pics
+list=$(perl -wne '
+print "'$site'/$1\n" if m#src="(pubimages/[^"]+\.(?:gif|jpg))"#
+' [0-9][0-9][0-9][0-9]*.html)
+test -z "$list" || { 
+	echo $list |
+	xargs snarf -p
+}
+mv -f *.gif *.jpg pubimages
+for i in [0-9][0-9][0-9][0-9]*.html
+# move pages and make symlinks
+do fn=$(grep '<h1 align="center">' $i|
+  sed 's#^.*<h1 align="center">\(.*\)</h1>.*$#\1#;s/ /_/g;s/\&.*;//g;s/[!?\/–«»¹…]/~/g;s/\.*$//;s/,//g;s/"//g')
+	mv $i nn/$i
+	ln -s nn/$i ${fn}.html
+done
+}
+rm -f page[0-9]*.html
+update freeos 2
+update program 2

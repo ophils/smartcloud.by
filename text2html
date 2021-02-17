@@ -1,0 +1,43 @@
+#! /bin/sh
+usage="\n
+	Usage: $0 файл-заготовка.text\n
+	преобразует заготовку в html\n
+	список обрабатываемых полей:\n\a
+"
+test $# = 1 || {
+	echo $usage
+	grep '^/^[A-Z].' $0|
+	cut -d/ -f2|
+	cut -c 2-
+	exit 0
+}
+awk '
+function putf(f) { 
+	while((getline l<f)>0)print l
+	close(f)
+}
+BEGIN	{ b=0;p=0;putf("src/0_html-head")}
+/^Title: /	{print "<title>"substr($0,8)"</title>"}
+/^Description-en: /{print "<meta name=\"description\" lang=\"en\" content=\""substr($0,17)"\">"}
+/^Description-ru: /{print "<meta name=\"description\" lang=\"ru\" content=\""substr($0,17)"\">"}
+/^Keywords-ru: /{print "<meta name=\"keywords\" lang=\"ru\" content=\""substr($0,14)"\">"}
+/^Keywords-en: /{print "<meta name=\"keywords\" lang=\"en\" content=\""substr($0,14)"\">"}
+/^Author: /	{print "<meta name=\"author\" content=\""substr($0,9)"\">"}
+/^Base-href: /	{print "<base href=\""substr($0,12)"\">"}
+/^E-mail: /	{print "<link rel=\"e-mail\" href=\"mailto:"substr($0,9)"\">"}
+/^Date: /	{print "<meta name=\"date\" content=\""substr($0,7)"\">"}
+/^Copyright: /	{print "<meta name=\"copyright\" content=\"&copy; "substr($0,12)"\">"}
+/^Version: /	{print "<meta name=\"version\" content=\""substr($0,10)"\">"}
+/^Style-file: /	{putf($2)}
+/^Script-file: /{putf($2)}
+/^Ext-table: /	{tab=$2}
+/^Footer: /	{footer=$2}
+/^$/{	if(b==0){b=1;if(tab!="")putf(tab);next} # первая пустая - конец заголовка
+	if(p==0){print "<p>";p=1;next} # пропуск лишних пустых строк, вставка параграфа
+    }
+	{if(b==1){print;p=0} 	# обычная строка - просто печать
+	}
+END	{putf(footer)}
+' $1|
+m4 -P stdlib.m4 -
+# last changed Чт. окт.  2 12:52:31 FET 2014
