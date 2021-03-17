@@ -4,7 +4,7 @@ Keywords-en: Debian, Linux, Unix, LUG, Oleg P. Philon, articles, Gomel, Belarus,
 Keywords-ru: Дебьян, Линукс, Юникс, Гомель, Беларусь, пользователи Линукс, Олег П. Филон, статьи, хаки, хакеры, эксперт, консультант, администрирование, серверы, сети, помощь
 Author: Олег П. Филон
 Copyright: FDL, Олег П. Филон
-E-mail: ophil44@gmail.com
+E-mail: smartcloud.by@gmail.com
 Date: 2002-07-15
 Version: 0.1
 Style-file: gulag.css
@@ -17,7 +17,7 @@ _strong(Администрирование сети на платформе Ли
 <p align=right> _italics(Хорошую книгу о системном администрировании
 ещё никто не написал<br>
 Автор.<br>
-_link(mailto:ophil44@gmail.com, Олег П. Филон),
+_link(mailto:smartcloud.by@gmail.com, Олег П. Филон),
 Линукс Лаб, Гомель, Беларусь<br>
 вер. 0.1, июль 2002
 )

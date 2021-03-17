@@ -1,5 +1,5 @@
 <p><div class="menu">
-программирование _link(mailto:ophil44@gmail.by, ophil)
+программирование _link(mailto:smartcloud.by@gmail.by, ophil)
 </div>
 <p align=center>
 _link(http://jigsaw.w3.org/css-validator/,

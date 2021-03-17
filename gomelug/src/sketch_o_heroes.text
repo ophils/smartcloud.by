@@ -4,7 +4,7 @@ Keywords-en: Linux, Unix, LUG, Oleg P. Philon, articles, Gomel, Belarus, ex-USSR
 Keywords-ru: Линукс, Юникс, Дебиан, открытые программы, программирование, Ричард Столмен, Линус Торвалдс, Эрик Рэймонд, Гомель, Беларусь, пользователи Линукс, Олег П. Филон, статьи, кризис ПО, хаки, хакеры, эксперт, консультант, администрирование, серверы, сети, помощь, обучение, пример, микрохаки
 Author: Олег П. Филон
 Copyright: FDL, Олег П. Филон
-E-mail: ophil44@gmail.com
+E-mail: smartcloud.by@gmail.com
 Date: 2002-12-22
 Version: 1.1
 Style-file: gulag.css
@@ -23,7 +23,7 @@ _link(micro-hacks.html, Микро хаки: советы и приемы эфф
 _strong(Этюд о героях невидимого фронта)
 <p align=right><i>Copyright(С) Олег П. Филон<br>
 канун 2000, Гомель, BY<br>
-_link(mailto:ophil44@gmail.com, ophil44@gmail.com)</i><br>
+_link(mailto:smartcloud.by@gmail.com, smartcloud.by@gmail.com)</i><br>
 
 Виртуальный мир полон реальных героев. Имена некоторых из них получили
 заслуженное признание и известны далеко за пределами виртуального

@@ -4,7 +4,7 @@ Keywords-en: Linux, Unix, LUG, Oleg P. Philon, Gomel, Belarus, ex-USSR, hacker, 
 Keywords-ru: Линукс, Юникс, Гомель, Беларусь, пользователи Линукс, Олег П. Филон, статьи, кризис, информатика, хакеры, Ричард Столмен, проект ГНЮ, лицензия GNU GPL, альтернативная ОС, защита информации, безопасность, внешний долг, образование, политика, правительство, информационная безопасность
 Author: Олег П. Филон
 Copyright: FDL, Олег П. Филон
-E-mail: ophil44@gmail.com
+E-mail: smartcloud.by@gmail.com
 Date: 2002-12-22
 Version: 1.1
 Style-file: gulag.css
@@ -244,4 +244,4 @@ _link(why-linux.html, Почему Линукс?)
 
 Изменять этот документ нельзя.
 С уважением    Олег П. Филон<br>
-_link(mailto:ophil44@gmail.com, ophil44@gmail.com)
+_link(mailto:smartcloud.by@gmail.com, smartcloud.by@gmail.com)
